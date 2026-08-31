@@ -605,5 +605,320 @@
         "precision": "childcare",
         "referencia": "Pasaje S14 Oe5-97 y los encuentros Ciudadela Unión y justicia, QUITO",
         "nivel": "direccion"
+    },
+    "CUENCA :: CALLE MARISCAL SUCRE # 5-43 ENTRE HNO. MIGUEL Y MARIANO CUEVA. CENTRO HISTORICO, AZUAY, CUENC": {
+        "lat": -2.9001,
+        "lon": -79.0059,
+        "fuente": "verificado",
+        "referencia": "Calle Mariscal Sucre # 5-43 entre Hno. Miguel y Mariano Cueva. CENTRO HISTÓRICO, Azuay, Cuenc, CUENCA",
+        "nivel": "ciudad"
+    },
+    "CUENCA :: LAS CHORRERAS Y PATOCOCHA - QUINTA CHICA- CUENCA-AZUAY-ECUADOR": {
+        "lat": -2.8856899,
+        "lon": -78.9625573,
+        "fuente": "photon",
+        "precision": "living_street",
+        "referencia": "Las chorreras y Patococha - Quinta Chica- Cuenca-Azuay-Ecuador, CUENCA",
+        "nivel": "direccion"
+    },
+    "CUENCA :: CASTELLANA Y BARCELONA 3\/44": {
+        "lat": -2.9001,
+        "lon": -79.0059,
+        "fuente": "verificado",
+        "referencia": "Castellana y Barcelona 3\/44, CUENCA",
+        "nivel": "ciudad"
+    },
+    "CUENCA :: SECTOR PARQUE CIRCO SOCIAL, CALLES GABRIEL CEVALLOS GARCIA": {
+        "lat": -2.8891382,
+        "lon": -78.9830577,
+        "fuente": "photon",
+        "precision": "park",
+        "referencia": "Sector parque circo social, Calles Gabriel Cevallos García, CUENCA",
+        "nivel": "direccion"
+    },
+    "CUENCA :: AVE DE LAS AMERICAS Y SILBAN ESQUINA OFICINA SICON": {
+        "lat": -2.9001,
+        "lon": -79.0059,
+        "fuente": "verificado",
+        "referencia": "Ave de las Américas y Silban esquina oficina Sicon, CUENCA",
+        "nivel": "ciudad"
+    },
+    "MILAGRO :: GUAYAS;MILAGRO; AV MARISCAL SUCRE ENTRE 11 AVA Y 12 ACA": {
+        "lat": -2.1344,
+        "lon": -79.5872,
+        "fuente": "verificado",
+        "referencia": "GUAYAS;MILAGRO; AV MARISCAL SUCRE ENTRE 11 AVA Y 12 ACA, MILAGRO",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: PEDRO PABLO GOMEZ 516 Y LA NOVENA": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Pedro Pablo Gómez 516 y la novena, GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: SAUCES 2 MZ 48 VILLA 16 AVENIDA ISIDRO AYORA GUAYAQUIL-GUAYAS": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "SAUCES 2 MZ 48 VILLA 16 AVENIDA ISIDRO AYORA GUAYAQUIL-GUAYAS, GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: COOP FRANCISCO JACOME MZ290 SL13": {
+        "lat": -2.128551,
+        "lon": -79.9515824,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Coop Francisco Jacome mz290 sl13, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: LIZARDO GARCIA Y CALLEJON PARRA ALADO DE LA IGLESIA CRISTO DEL CONSUELO, GUAYAQUIL, GUAYAS.": {
+        "lat": -2.2196033,
+        "lon": -79.9035081,
+        "fuente": "photon",
+        "precision": "suburb",
+        "referencia": "Lizardo garcia y callejón parra alado de la iglesia Cristo del Consuelo, Guayaquil, Guayas., GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: COOP ASSAD BUCARAM MZ KJ SL. 14 (8ACJELLOON. 26 NO)": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Coop Assad Bucaram Mz KJ Sl. 14 (8ACJELLOÓN. 26 NO), GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: GUAYAQUIL, GUASMO CENTRAL , COOPERATIVA 19 DE AGOSTO M6 S2 , REFERENCIA FRENTE A FLORESTA 1 , EN LA PLACITA": {
+        "lat": -2.2519326,
+        "lon": -79.8849806,
+        "fuente": "photon",
+        "precision": "pitch",
+        "referencia": "Guayaquil, guasmo central , cooperativa 19 de agosto m6 s2 , referencia frente a floresta 1 , en la placita, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: CENTRO COMERCIAL SAN ANTONIO LOCAL 26": {
+        "lat": -2.0676175,
+        "lon": -79.8936497,
+        "fuente": "photon",
+        "precision": "retail",
+        "referencia": "Centro Comercial San Antonio Local 26, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: DIRC. GUAYAQUIL NORTE COOP JULIO CARTAGENA MZ19 SOL 1 CASA ESQUINERA 2 PISOS": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Dirc. Guayaquil norte Coop julio cartagena Mz19 sol 1 Casa esquinera 2 pisos, GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "SANTA ELENA :: BARRIO ALBERTO SPENCER CALLE MANGLARALTO ENTRE LA MARTHA DE ROLDOS Y LA 42, ATRAS DE RADIO SALINAS": {
+        "lat": -2.2263776,
+        "lon": -80.8654469,
+        "fuente": "photon",
+        "precision": "stadium",
+        "referencia": "barrio Alberto Spencer calle manglaralto entre la Martha de roldos y la 42, atrás de radio salinas, SANTA ELENA",
+        "nivel": "direccion"
+    },
+    "PINAS :: AV. INDEPENDENCIA 31-45 ENTRE QUITO Y ELOY ALFARO. PINAS EL ORO ECUADOR.": {
+        "lat": -3.6774105,
+        "lon": -79.6875773,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "Av. Independencia 31-45 entre Quito y Eloy Alfaro., Piñas El Oro Ecuador., PIÑAS",
+        "nivel": "direccion"
+    },
+    "PINAS :: AV MANUEL UBITICIO GALLARDO A 100 METROS DE LA REVISION VEHICULAR": {
+        "lat": -3.6803,
+        "lon": -79.6858,
+        "fuente": "verificado",
+        "referencia": "AV MANUEL UBITICIO GALLARDO A 100 METROS DE LA REVISIÓN VEHICULAR, PIÑAS",
+        "nivel": "ciudad"
+    },
+    "SANTO DOMINGO :: AV. ABRAHAM CALAZACON 1653 Y CLEMENCIA DE MORA RECIBE : MARGARITA ELIZABETH CARRION LOPEZ": {
+        "lat": -0.2583698,
+        "lon": -79.1612103,
+        "fuente": "photon",
+        "precision": "secondary",
+        "referencia": "Av. Abraham Calazacon 1653 y Clemencia de Mora RECIBE : Margarita Elizabeth Carrión López, SANTO DOMINGO",
+        "nivel": "direccion"
+    },
+    "PUYO :: AV. JUAN MONTALVO Y DEMETRIO AGUILERA, ESQUINA CON CALLE ALTA Y MIGUEL DE LEON, CASA DE LADRILLO.": {
+        "lat": -1.4835361,
+        "lon": -78.0084994,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Av. Juan Montalvo y Demetrio Aguilera, esquina con calle Alta y Miguel de León, casa de ladrillo., PUYO",
+        "nivel": "direccion"
+    },
+    "PUYO :: AV ALBERTO ZAMBRANO Y CUMANDA": {
+        "lat": -1.4916618,
+        "lon": -78.0097682,
+        "fuente": "photon",
+        "precision": "trunk",
+        "referencia": "Av Alberto Zambrano y cumanda, PUYO",
+        "nivel": "direccion"
+    },
+    "LAGO AGRIO :: 0": {
+        "lat": 0.0847,
+        "lon": -76.8828,
+        "fuente": "verificado",
+        "referencia": "0, Lago Agrio",
+        "nivel": "ciudad"
+    },
+    "QUITO :: URB. PUSUQUI PASAJE OE3N S8-373 Y ALEJANDRO MACHUCA": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "urb. pusuqui pasaje oe3n S8-373 y alejandro machuca, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: DIRECCION EXACTA: AV. SIMON BOLIVAR E6 494 CALLE 15, SECTOR PUEBLO UNIDO ALTO. ATRAS DE MECANICA JQ, ANTES DE LA ENTRADA SAN MARTIN DE PORRES": {
+        "lat": -0.2561819,
+        "lon": -78.4958105,
+        "fuente": "photon",
+        "precision": "yes",
+        "referencia": "Dirección exacta: Av. Simón Bolivar E6 494 calle 15, Sector Pueblo Unido Alto., Atrás de mecánica JQ, antes de la entrada San Martin de Porres, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: URBANIZACION UTE CASA 80 GEOVANNI CALLES Y PALERMO": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "urbanización UTE casa 80 geovanni calles y Palermo, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: ALBERTO SPENCER N16-120 Y ANTONIO BORRERO. CALLE ADOQUINADA DETRAS DE LA TRIBUNA DEL ESTADIO DE LA LIGA BARRIAL DE CARAPUNGO": {
+        "lat": -0.091802,
+        "lon": -78.4508613,
+        "fuente": "photon",
+        "precision": "pitch",
+        "referencia": "Alberto Spencer N16-120 y Antonio Borrero. Calle adoquinada detrás de la tribuna del estadio de la Liga barrial de Carapungo, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: BARRIO LUZ Y VIDA, CALLE CARLOS MANTILLA Y JOSE CANIZARES": {
+        "lat": -0.069772,
+        "lon": -78.4361569,
+        "fuente": "photon",
+        "precision": "bus_stop",
+        "referencia": "Barrio Luz y vida, calle Carlos Mantilla y José Cañizares, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: PINTAG-BARRIO SAN AGUSTIN- ALADO DE LA IGLESIA CATOLICA.": {
+        "lat": -0.2585631,
+        "lon": -78.5405873,
+        "fuente": "photon",
+        "precision": "place_of_worship",
+        "referencia": "Pintag-Barrio San Agustin- alado de la iglesia catolica., QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: FRAY LEONARDO MURIALDO Y AV. 6 DE DICIEMBRE. CONJUNTO BRASILIA 3": {
+        "lat": -0.1387986,
+        "lon": -78.4725339,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Fray Leonardo Murialdo y Av. 6 de diciembre. Conjunto Brasilia 3, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV DE LOS PINOS Y ALFREDO CARPIO E1-51 SECTOR LA KENNEDY, QUITO-PICHINCHA": {
+        "lat": -0.1389931,
+        "lon": -78.4780776,
+        "fuente": "photon",
+        "precision": "neighbourhood",
+        "referencia": "Av de los Pinos y Alfredo Carpio E1-51 sector la Kennedy, Quito-Pichincha, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: SANTA BARBARA, PROFETA ZACARIAS Y PASAJE C": {
+        "lat": -0.2629185,
+        "lon": -78.5525086,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Santa Bárbara, Profeta Zacarías y pasaje C, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: KENNEDY": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "KENNEDY, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: N73 E5-72 Y AV ELOY ALFARO": {
+        "lat": -0.1950289,
+        "lon": -78.4940508,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "N73 E5-72 y Av Eloy Alfaro, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV. GENERAL ENRIQUES #35, URB. BOHIOS DE JATUMPAMBA N60, RUMINAHUI, SANGOLQUI": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Av. General Enriques #35, Urb. Bohios de Jatumpamba N60, Ruminahui, Sangolqui, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: CIUDADANA IBARRA CALLE ROSARIO BORJA Y CALLE B": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "ciudadana Ibarra calle Rosario Borja y calle b, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: CARAPUNGO CALLE NEPTALY GODOY N14-166 Y RIO CAYAMBE": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Carapungo Calle Neptaly Godoy N14-166 y Rio Cayambe, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: SECTOR NORTE EN CALDERON BARRIO TAJAMAR AV BRASIL Y DE LAS ORQUIDEAS NUMERO DEL LOTE 7.": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "sector norte en Calderón barrio Tajamar av brasil y de las orquídeas numero del lote 7., QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: SECTOR LA GASCA - CALLES (MUNIVE OE8-202 Y ATACAMES)": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "sector la Gasca - calles (Munive Oe8-202 y Atacames), QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: SABANILLA Y 8VA TRANSVERSAL": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Sabanilla y 8va transversal, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: GUAMANI, BARRIO PAQUISHA, OE7M Y GUSTAVO ORCES S58-38.": {
+        "lat": -0.3437968,
+        "lon": -78.56456,
+        "fuente": "photon",
+        "precision": "suburb",
+        "referencia": "Guamani, Barrio Paquisha, Oe7M y Gustavo Orces S58-38., QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV GIOVANNI CALLES Y CARAN": {
+        "lat": -0.1066265,
+        "lon": -78.4583343,
+        "fuente": "photon",
+        "precision": "secondary",
+        "referencia": "Av Giovanni Calles y Caran, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: SAN CARLOS, VACA DE CASTRO Y PEDRO DE ALVARADO BLOQUE MUISNE": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "San carlos, vaca de castro y pedro de alvarado bloque muisne, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: FELIX ORALABAL N45-91 Y ZAMORA": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Felix Oralabal N45-91 y Zamora, QUITO",
+        "nivel": "ciudad"
     }
 }

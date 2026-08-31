@@ -1,0 +1,25 @@
+name: keep-render-awake
+
+# Mantiene despierto el servicio de Render (plan Free) haciéndole ping
+# periódico. Configura la variable RENDER_URL en:
+#   Settings → Secrets and variables → Actions → Variables → New repository variable
+#   Name: RENDER_URL   Value: https://TU-APP.onrender.com
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # cada ~10 minutos
+  workflow_dispatch:          # permite ejecutarlo manualmente
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping al servicio
+        run: |
+          URL="${{ vars.RENDER_URL }}"
+          if [ -z "$URL" ]; then
+            echo "Falta la variable RENDER_URL. Añádela en Settings → Secrets and variables → Actions → Variables."
+            exit 0
+          fi
+          echo "Ping a $URL"
+          curl -sS -o /dev/null -w "Respuesta: HTTP %{http_code}\n" --max-time 90 "$URL" || echo "Ping fallido (el servicio pudo estar despertando)."
