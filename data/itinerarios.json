@@ -1,0 +1,155 @@
+{
+    "_comentario": "km_tramo = distancia por carretera (km) desde la parada anterior de la lista; la primera se mide desde el hub en Amaguaña. Se recalcula con el botón \"Calcular distancias reales\" (geolocalización OSRM) o se puede editar manualmente.",
+    "ruta1_sierra": [
+        {
+            "ciudad": "LATACUNGA",
+            "km_tramo": 71.1,
+            "estimado": false
+        },
+        {
+            "ciudad": "PUJILI",
+            "km_tramo": 11.6,
+            "estimado": false
+        },
+        {
+            "ciudad": "AMBATO",
+            "km_tramo": 47.5,
+            "estimado": false
+        },
+        {
+            "ciudad": "PELILEO",
+            "km_tramo": 17.5,
+            "estimado": false
+        },
+        {
+            "ciudad": "RIOBAMBA",
+            "km_tramo": 54.8,
+            "estimado": false
+        },
+        {
+            "ciudad": "CUENCA",
+            "km_tramo": 256.6,
+            "estimado": false
+        },
+        {
+            "ciudad": "LOJA",
+            "km_tramo": 199.4,
+            "estimado": false
+        }
+    ],
+    "ruta1_costa": [
+        {
+            "ciudad": "EL EMPALME",
+            "km_tramo": 234.3,
+            "estimado": false
+        },
+        {
+            "ciudad": "MILAGRO",
+            "km_tramo": 161.8,
+            "estimado": false
+        },
+        {
+            "ciudad": "BUCAY",
+            "km_tramo": 58.4,
+            "estimado": false
+        },
+        {
+            "ciudad": "ALFREDO BAQUERIZO MORENO-JUJAN",
+            "km_tramo": 66.9,
+            "estimado": false
+        },
+        {
+            "ciudad": "GUAYAQUIL",
+            "km_tramo": 56.7,
+            "estimado": false
+        },
+        {
+            "ciudad": "LA LIBERTAD",
+            "km_tramo": 135.5,
+            "estimado": false
+        },
+        {
+            "ciudad": "SANTA ELENA",
+            "km_tramo": 6,
+            "estimado": false
+        },
+        {
+            "ciudad": "MACHALA",
+            "km_tramo": 308.7,
+            "estimado": false
+        },
+        {
+            "ciudad": "PIÑAS",
+            "km_tramo": 85,
+            "estimado": false
+        }
+    ],
+    "ruta1_oriente": [
+        {
+            "ciudad": "PUYO",
+            "km_tramo": 214,
+            "estimado": false
+        },
+        {
+            "ciudad": "LAGO AGRIO",
+            "km_tramo": 329.3,
+            "estimado": false
+        },
+        {
+            "ciudad": "CUYABENO",
+            "km_tramo": 78.3,
+            "estimado": false
+        }
+    ],
+    "ruta2": [
+        {
+            "ciudad": "SANTO DOMINGO",
+            "km_tramo": 113.2,
+            "estimado": false
+        },
+        {
+            "ciudad": "EL CARMEN",
+            "km_tramo": 30.6,
+            "estimado": false
+        },
+        {
+            "ciudad": "CHONE",
+            "km_tramo": 126.9,
+            "estimado": false
+        },
+        {
+            "ciudad": "MANTA",
+            "km_tramo": 90.9,
+            "estimado": false
+        }
+    ],
+    "ruta_pichincha": [
+        {
+            "ciudad": "QUITO",
+            "km_tramo": 26.9,
+            "estimado": false
+        },
+        {
+            "ciudad": "QUITO NORTE",
+            "km_tramo": 19.5,
+            "estimado": false
+        },
+        {
+            "ciudad": "QUITO SUR",
+            "km_tramo": 29.1,
+            "estimado": false
+        },
+        {
+            "ciudad": "EL VALLE",
+            "km_tramo": 28.9,
+            "estimado": false
+        }
+    ],
+    "ruta_individual": [
+        {
+            "ciudad": "CAYAMBE",
+            "km_tramo": 90.7,
+            "estimado": false
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "ruta1_sierra": {
+        "nombre": "Sierra",
+        "grupo": "RUTA 1 - Rutas de seguimiento de encomiendas",
+        "lugares": [
+            "LATACUNGA",
+            "PUJILI",
+            "AMBATO",
+            "PELILEO",
+            "RIOBAMBA",
+            "CUENCA",
+            "LOJA"
+        ]
+    },
+    "ruta1_costa": {
+        "nombre": "Costa",
+        "grupo": "RUTA 1 - Rutas de seguimiento de encomiendas",
+        "lugares": [
+            "GUAYAQUIL",
+            "BUCAY",
+            "ALFREDO BAQUERIZO MORENO-JUJAN",
+            "EL EMPALME",
+            "MILAGRO",
+            "SANTA ELENA",
+            "LA LIBERTAD",
+            "QUEVEDO",
+            "PIÑAS",
+            "MACHALA"
+        ]
+    },
+    "ruta1_oriente": {
+        "nombre": "Oriente",
+        "grupo": "RUTA 1 - Rutas de seguimiento de encomiendas",
+        "lugares": [
+            "PUYO",
+            "LAGO AGRIO",
+            "CUYABENO"
+        ]
+    },
+    "ruta2": {
+        "nombre": "Ruta 2",
+        "grupo": "RUTA 2 - Rutas de seguimiento de encomiendas",
+        "lugares": [
+            "SANTO DOMINGO",
+            "CHONE",
+            "MANTA",
+            "EL CARMEN"
+        ]
+    },
+    "ruta_pichincha": {
+        "nombre": "Ruta Interna Pichincha",
+        "grupo": "RUTA INTERNA",
+        "lugares": [
+            "QUITO",
+            "QUITO SUR",
+            "QUITO NORTE",
+            "EL VALLE"
+        ]
+    },
+    "ruta_individual": {
+        "nombre": "RUTA INDIVIDUAL",
+        "grupo": "INDIVIDUAL",
+        "lugares": [
+            "CAYAMBE"
+        ]
+    }
+}

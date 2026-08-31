@@ -1,0 +1,609 @@
+{
+    "_hub": {
+        "nombre": "Amaguaña (Centro de Distribución)",
+        "lat": -0.3766,
+        "lon": -78.5056
+    },
+    "LATACUNGA": {
+        "lat": -0.935,
+        "lon": -78.6156,
+        "fuente": "verificado",
+        "referencia": "Latacunga, Cotopaxi, Ecuador"
+    },
+    "PUJILI": {
+        "lat": -0.9573,
+        "lon": -78.6958,
+        "fuente": "verificado",
+        "referencia": "Pujilí, Cotopaxi, Ecuador"
+    },
+    "AMBATO": {
+        "lat": -1.2491,
+        "lon": -78.6167,
+        "fuente": "verificado",
+        "referencia": "Ambato, Tungurahua, Ecuador"
+    },
+    "PELILEO": {
+        "lat": -1.3286,
+        "lon": -78.5449,
+        "fuente": "verificado",
+        "referencia": "Pelileo, Tungurahua, Ecuador"
+    },
+    "RIOBAMBA": {
+        "lat": -1.6636,
+        "lon": -78.6546,
+        "fuente": "verificado",
+        "referencia": "Riobamba, Chimborazo, Ecuador"
+    },
+    "CUENCA": {
+        "lat": -2.9001,
+        "lon": -79.0059,
+        "fuente": "verificado",
+        "referencia": "Cuenca, Azuay, Ecuador"
+    },
+    "LOJA": {
+        "lat": -3.9931,
+        "lon": -79.2042,
+        "fuente": "verificado",
+        "referencia": "Loja, Loja, Ecuador"
+    },
+    "GUAYAQUIL": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Guayaquil, Guayas, Ecuador"
+    },
+    "BUCAY": {
+        "lat": -2.2004,
+        "lon": -79.1376,
+        "fuente": "verificado",
+        "referencia": "General Antonio Elizalde (Bucay), Guayas, Ecuador"
+    },
+    "ALFREDO BAQUERIZO MORENO-JUJAN": {
+        "lat": -1.9167,
+        "lon": -79.5667,
+        "fuente": "verificado",
+        "referencia": "Alfredo Baquerizo Moreno (Jujan), Guayas, Ecuador"
+    },
+    "EL EMPALME": {
+        "lat": -1.0447,
+        "lon": -79.6447,
+        "fuente": "verificado",
+        "referencia": "El Empalme, Guayas, Ecuador"
+    },
+    "MILAGRO": {
+        "lat": -2.1344,
+        "lon": -79.5872,
+        "fuente": "verificado",
+        "referencia": "Milagro, Guayas, Ecuador"
+    },
+    "SANTA ELENA": {
+        "lat": -2.2286,
+        "lon": -80.8583,
+        "fuente": "verificado",
+        "referencia": "Santa Elena, Santa Elena, Ecuador"
+    },
+    "LA LIBERTAD": {
+        "lat": -2.2333,
+        "lon": -80.9053,
+        "fuente": "verificado",
+        "referencia": "La Libertad, Santa Elena, Ecuador"
+    },
+    "QUEVEDO": {
+        "lat": -1.0225,
+        "lon": -79.4634,
+        "fuente": "verificado",
+        "referencia": "Quevedo, Los Ríos, Ecuador"
+    },
+    "PINAS": {
+        "lat": -3.6803,
+        "lon": -79.6858,
+        "fuente": "verificado",
+        "referencia": "Piñas, El Oro, Ecuador"
+    },
+    "MACHALA": {
+        "lat": -3.2586,
+        "lon": -79.9553,
+        "fuente": "verificado",
+        "referencia": "Machala, El Oro, Ecuador"
+    },
+    "PUYO": {
+        "lat": -1.4869,
+        "lon": -78.0028,
+        "fuente": "verificado",
+        "referencia": "Puyo, Pastaza, Ecuador"
+    },
+    "LAGO AGRIO": {
+        "lat": 0.0847,
+        "lon": -76.8828,
+        "fuente": "verificado",
+        "referencia": "Nueva Loja (Lago Agrio), Sucumbíos, Ecuador"
+    },
+    "CUYABENO": {
+        "lat": -0.1229,
+        "lon": -76.3419,
+        "fuente": "verificado",
+        "referencia": "Tarapoa (cabecera Cuyabeno), Sucumbíos, Ecuador"
+    },
+    "SANTO DOMINGO": {
+        "lat": -0.2542,
+        "lon": -79.1719,
+        "fuente": "verificado",
+        "referencia": "Santo Domingo de los Tsáchilas, Ecuador"
+    },
+    "CHONE": {
+        "lat": -0.696,
+        "lon": -80.0944,
+        "fuente": "verificado",
+        "referencia": "Chone, Manabí, Ecuador"
+    },
+    "MANTA": {
+        "lat": -0.949,
+        "lon": -80.7264,
+        "fuente": "verificado",
+        "referencia": "Manta, Manabí, Ecuador"
+    },
+    "EL CARMEN": {
+        "lat": -0.2667,
+        "lon": -79.4297,
+        "fuente": "verificado",
+        "referencia": "El Carmen, Manabí, Ecuador"
+    },
+    "GUALACEO": {
+        "lat": -2.8886,
+        "lon": -78.7772,
+        "fuente": "verificado",
+        "referencia": "Gualaceo, Azuay, Ecuador"
+    },
+    "CAYAMBE": {
+        "lat": 0.0403,
+        "lon": -78.147,
+        "fuente": "verificado",
+        "referencia": "Cayambe, Pichincha, Ecuador"
+    },
+    "QUITO": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Quito (Centro), Pichincha, Ecuador"
+    },
+    "QUITO NORTE": {
+        "lat": -0.0942,
+        "lon": -78.4772,
+        "fuente": "verificado",
+        "referencia": "Quito Norte (Carcelén), Pichincha, Ecuador"
+    },
+    "QUITO SUR": {
+        "lat": -0.2939,
+        "lon": -78.5533,
+        "fuente": "verificado",
+        "referencia": "Quito Sur (Quitumbe), Pichincha, Ecuador"
+    },
+    "EL VALLE": {
+        "lat": -0.3308,
+        "lon": -78.447,
+        "fuente": "verificado",
+        "referencia": "El Valle de los Chillos (Sangolquí), Pichincha, Ecuador"
+    },
+    "RIOBAMBA :: AV PEDRO VICENTE MALDONADO (FRENTE AL ESTADIO)": {
+        "lat": -1.6663317,
+        "lon": -78.6603267,
+        "fuente": "photon",
+        "precision": "stadium",
+        "referencia": "Av Pedro Vicente Maldonado (frente al estadio), RIOBAMBA",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: CUENCA 2621 Y TUNGURAHUA": {
+        "lat": -2.1992157,
+        "lon": -79.9000284,
+        "fuente": "photon",
+        "precision": "bus_stop",
+        "referencia": "Cuenca 2621 y Tungurahua, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "CUENCA :: PRINCIPAL CALLE AV. SALADO Y RODRIGO ARIAS MANCILLA REFERENCIA: ENTRADA A URBANIZACION, PORTON NEGRO.": {
+        "lat": -2.8741437,
+        "lon": -78.9776839,
+        "fuente": "photon",
+        "precision": "service",
+        "referencia": "Principal Calle Av. Salado y Rodrigo Arias Mancilla, Referencia: Entrada a Urbanización, Portón Negro., CUENCA",
+        "nivel": "direccion"
+    },
+    "LOJA :: RAMON PINTO Y COLON": {
+        "lat": -3.997429,
+        "lon": -79.206598,
+        "fuente": "photon",
+        "precision": "bakery",
+        "referencia": "RAMÓN PINTO Y COLÓN, LOJA",
+        "nivel": "direccion"
+    },
+    "LOJA :: 18 DE NOVIEMBRE 201-32 Y 10 DE AGOSTO": {
+        "lat": -4.0001771,
+        "lon": -79.2034281,
+        "fuente": "photon",
+        "precision": "hospital",
+        "referencia": "18 de noviembre 201-32 y 10 de agosto, LOJA",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: URB. PORTOFINO VIA LA COSTA": {
+        "lat": -2.184426,
+        "lon": -79.9848163,
+        "fuente": "photon",
+        "precision": "swimming_pool",
+        "referencia": "Urb. Portofino via la costa, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "GUAYAQUIL :: MAPASINGUE ESTE CALLE RICARDO PLANAS 121": {
+        "lat": -2.1568753,
+        "lon": -79.9283675,
+        "fuente": "photon",
+        "precision": "car_repair",
+        "referencia": "Mapasingue Este Calle Ricardo Planas 121, GUAYAQUIL",
+        "nivel": "direccion"
+    },
+    "MACHALA :: MARCEL LANIADO Y NAPOLEON MERA": {
+        "lat": -3.2561556,
+        "lon": -79.9528561,
+        "fuente": "photon",
+        "precision": "department_store",
+        "referencia": "Marcel Laniado y Napoleón Mera, MACHALA",
+        "nivel": "direccion"
+    },
+    "CUYABENO :: CALLE PRINCIPAL E-10 KILOMETRO 65 DIAGONAL A LA ESTACION DE SERVICIO PETRO ECUADOR - PARROQUIA TARAPOA": {
+        "lat": -0.1229,
+        "lon": -76.3419,
+        "fuente": "verificado",
+        "referencia": "Calle Principal E-10 Kilómetro 65, Diagonal a la estación de Servicio Petro Ecuador - PARROQUIA TARAPOA, CUYABENO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: DE LOS CEREZOS Y JORGE PEREZ N66-190, EDIFICIO EL CEREZO, SECTOR LA OFELIA": {
+        "lat": -0.1183182,
+        "lon": -78.4842227,
+        "fuente": "photon",
+        "precision": "neighbourhood",
+        "referencia": "De los Cerezos y Jorge Perez N66-190, edificio el cerezo, sector la Ofelia, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: CHILLOGALLO SANTA BARBARA, QUITO": {
+        "lat": -0.2664795,
+        "lon": -78.5565999,
+        "fuente": "photon",
+        "precision": "place_of_worship",
+        "referencia": "Chillogallo Santa Barbara, Quito, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV. TERESA TIPANTA Y OE2A S41-10, TERMINAL QUITUMBE": {
+        "lat": -0.2953938,
+        "lon": -78.5556459,
+        "fuente": "photon",
+        "precision": "bus_stop",
+        "referencia": "Av. Teresa Tipanta y Oe2A S41-10, terminal Quitumbe, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV MALDONADO Y REINALDO SANTA CRUZ OE1-40, GUAMANI": {
+        "lat": -0.2562119,
+        "lon": -78.5223773,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "Av Maldonado y Reinaldo Santa Cruz Oe1-40, Guamani, QUITO",
+        "nivel": "direccion"
+    },
+    "LATACUNGA :: CALLE GUAYAQUIL Y NAPO": {
+        "lat": -0.935,
+        "lon": -78.6156,
+        "fuente": "verificado",
+        "referencia": "Calle Guayaquil y Napo, LATACUNGA",
+        "nivel": "ciudad"
+    },
+    "PUJILI :: BARRIO EL CAPULI, AV. VELASCO IBARRA, JUNTO AL TANQUE ELEVADO COLOR AZUL, CASA 320 FAMILIA ACHOTE": {
+        "lat": -0.9573376,
+        "lon": -78.6949923,
+        "fuente": "photon",
+        "precision": "hotel",
+        "referencia": "Barrio el Capuli, Av. Velasco ibarra, junto al tanque elevado color Azul, casa 320 familia Achote, Pujili",
+        "nivel": "direccion"
+    },
+    "AMBATO :: ALFREDO CARPIO Y PAREDES HERRERA": {
+        "lat": -1.2491,
+        "lon": -78.6167,
+        "fuente": "verificado",
+        "referencia": "Alfredo Carpio y Paredes Herrera, AMBATO",
+        "nivel": "ciudad"
+    },
+    "AMBATO :: CALLES LIZARDO RUIZ Y OBISPO ITURRALDE": {
+        "lat": -1.2491,
+        "lon": -78.6167,
+        "fuente": "verificado",
+        "referencia": "calles Lizardo Ruiz y Obispo iturralde, AMBATO",
+        "nivel": "ciudad"
+    },
+    "AMBATO :: AVENIDA MANUELA SAENZ Y ANTONIO PALOMINO, 180103": {
+        "lat": -1.2592523,
+        "lon": -78.6400997,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "Avenida Manuela Sáenz y Antonio Palomino, 180103, AMBATO",
+        "nivel": "direccion"
+    },
+    "AMBATO :: AV. GONSALEZ SUAREZ 0389 Y ABDON CALDERON. DIAGONAL A CEVICHERIA DELICIAS DEL MAR. HORARIO DE ENTREGA: DE LUNES A VIERNES DE 09H00 A 18H00, SABADO DE 10H00 A 13H00 HTTPS:\/\/WWW.GOOGLE.COM\/MAPS\/SEARCH\/MASTERPRINT%20AMBATO\/@-1.23281807,-78.62104827,17Z?HL=ES": {
+        "lat": -1.2350701,
+        "lon": -78.618766,
+        "fuente": "photon",
+        "precision": "secondary",
+        "referencia": "Av. Gonsalez Suárez 0389 y Abdon Calderon. Diagonal a Cevichería Delicias del Mar. Horario de Entrega: De lunes a Viernes de 09h00 a 18h00, Sábado de 10h00 a 13h00 https:\/\/www.google.com\/maps\/search\/Masterprint%20Ambato\/@-1.23281807,-78.62104827,17z?hl=es, AMBATO",
+        "nivel": "direccion"
+    },
+    "AMBATO :: QUITO 0527 ENTRE CEVALLOS Y JUAN B. VELA": {
+        "lat": -1.2491,
+        "lon": -78.6167,
+        "fuente": "verificado",
+        "referencia": "Quito 0527 entre Cevallos y Juan B. Vela, AMBATO",
+        "nivel": "ciudad"
+    },
+    "AMBATO :: RODRIGO VELLA 00-25, Y MANUEL GARCES (ESQUINA) - BARRIO LA ALBORADA - AMBATO, REFERENCIA: CASA VERDE ESQUINERA DE 4 PISOS.": {
+        "lat": -1.2615556,
+        "lon": -78.6318603,
+        "fuente": "photon",
+        "precision": "park",
+        "referencia": "Rodrigo Vella 00-25, y Manuel Garces (esquina) - Barrio La Alborada - Ambato, referencia: casa verde esquinera de 4 pisos., AMBATO",
+        "nivel": "direccion"
+    },
+    "AMBATO :: VARGAS TORRES 09-35 Y PRIMERA IMPRENTA, CASA ESQUINA DE BALCONES, LOCAL SEELIE": {
+        "lat": -1.2491,
+        "lon": -78.6167,
+        "fuente": "verificado",
+        "referencia": "Vargas Torres 09-35 y Primera Imprenta, casa esquina de balcones, local Seelie, AMBATO",
+        "nivel": "ciudad"
+    },
+    "PELILEO :: CANTON PELILEO. PARROQUIA HUAMBALO CALLE JUAN MONTALVO ENTRE 24 DE MAYO Y OLMEDO": {
+        "lat": -1.3286,
+        "lon": -78.5449,
+        "fuente": "verificado",
+        "referencia": "Cantón pelileo. Parroquia huambaló calle Juan Montalvo entre 24 de mayo y Olmedo, PELILEO",
+        "nivel": "ciudad"
+    },
+    "RIOBAMBA :: AV PEDRO VICENTE MALDONADO (FRENTE AL ESTADIO DE LA ESPOCH) ELECTRONICA ELECTROSEG": {
+        "lat": -1.6636,
+        "lon": -78.6546,
+        "fuente": "verificado",
+        "referencia": "Av Pedro Vicente Maldonado (frente al estadio de la Espoch) Electronica Electroseg, RIOBAMBA",
+        "nivel": "ciudad"
+    },
+    "RIOBAMBA :: VELOZ Y DIEGO DE IBARRA 35\/40": {
+        "lat": -1.6636,
+        "lon": -78.6546,
+        "fuente": "verificado",
+        "referencia": "veloz y Diego de ibarra 35\/40, RIOBAMBA",
+        "nivel": "ciudad"
+    },
+    "CUENCA :: PRESIDENTE BORRERO Y MUNOZ ARIZAGA ESQUINA": {
+        "lat": -2.9001,
+        "lon": -79.0059,
+        "fuente": "verificado",
+        "referencia": "Presidente borrero y muñoz arizaga esquina, CUENCA",
+        "nivel": "ciudad"
+    },
+    "LOJA :: CALLES : 18 DE NOVIEMBRE ENTRE MIGUEL RIOFRIO Y AZUAY LOCAL LA COSTURITA": {
+        "lat": -3.9931,
+        "lon": -79.2042,
+        "fuente": "verificado",
+        "referencia": "calles : 18 de noviembre entre Miguel Riofrío y Azuay Local la Costurita, LOJA",
+        "nivel": "ciudad"
+    },
+    "LOJA :: OSWALDO ESPINOZA Y MANUEL ZARATE": {
+        "lat": -3.9931,
+        "lon": -79.2042,
+        "fuente": "verificado",
+        "referencia": "Oswaldo espinoza y Manuel Zárate, LOJA",
+        "nivel": "ciudad"
+    },
+    "LOJA :: JIPIRO ALTO, DEL PUENTE DE MADERA DE JIPIRO PARAISO EN LA 3RA ENTRADA A LA IZQUIERDA EN UNA PENDIENTE 2DA ENTRADA": {
+        "lat": -3.9931,
+        "lon": -79.2042,
+        "fuente": "verificado",
+        "referencia": "Jipiro alto, del puente de madera de jipiro paraíso en la 3ra entrada a la izquierda en una pendiente 2da entrada, LOJA",
+        "nivel": "ciudad"
+    },
+    "EL EMPALME :: EL EMPALME,CALLE HUMBERTO RODRIGUEZ Y QUITO, CASA ALTA COLOR PIEL AL FRENTE DE BAZAR CUALQUIER COSA LLAMAR PARA COORDINAR ENTREGA": {
+        "lat": -1.0447,
+        "lon": -79.6447,
+        "fuente": "verificado",
+        "referencia": "El Empalme,calle Humberto Rodriguez y Quito, casa alta color piel al frente de bazar cualquier cosa llamar para coordinar entrega, EL EMPALME",
+        "nivel": "ciudad"
+    },
+    "MILAGRO :: VIA MARISCAL SUCRE Y CAYAPAS CIUDAD DE MILAGRO": {
+        "lat": -2.1344,
+        "lon": -79.5872,
+        "fuente": "verificado",
+        "referencia": "Via Mariscal sucre y cayapas ciudad de Milagro, MILAGRO",
+        "nivel": "ciudad"
+    },
+    "MILAGRO :: AV MARISCAL SUCRE, SECTOR LA PRADERA 4TO GRUPO, AL LADO DEL ASADERO 5 HERMANAS": {
+        "lat": -2.1312141,
+        "lon": -79.588507,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Av Mariscal Sucre, sector la pradera 4to grupo, al lado del asadero 5 hermanas, MILAGRO",
+        "nivel": "direccion"
+    },
+    "BUCAY :: MALECON ENRRIQUE VALDEZ ENTRE RIOBAMBA Y NAPO, BUCAY, GUAYAS.": {
+        "lat": -2.2004,
+        "lon": -79.1376,
+        "fuente": "verificado",
+        "referencia": "Malecon Enrrique Valdez entre Riobamba Y Napo, Bucay, Guayas., BUCAY",
+        "nivel": "ciudad"
+    },
+    "ALFREDO BAQUERIZO MORENO-JUJAN :: VIA E25, RCTO POCO A POCO DEL CANTON JUJAN, ATRAS DE LA ESCUELA YAGUACHI, ENTRANDO POR LA TIENDA A DOS CASAS, ALFREDO BAQUERIZO MORENO - JUJAN": {
+        "lat": -1.9167,
+        "lon": -79.5667,
+        "fuente": "verificado",
+        "referencia": "via E25, Rcto Poco a Poco del canton Jujan, atras de la Escuela Yaguachi, entrando por la tienda a dos casas, Alfredo Baquerizo Moreno - JUJAN, ALFREDO BAQUERIZO MORENO-JUJAN",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: LEONIDAS PLAZA #1208 ENTRE BRASIL Y CUENCA (LLAMAR YA QUE VIVO EN SEGUNDO PISO)": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Leonidas Plaza #1208 entre brasil y cuenca (llamar ya que vivo en segundo piso), GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "GUAYAQUIL :: MUCHO LOTE 2 ETAPA VICTORIA DEL RIO MZ 2937 V3": {
+        "lat": -2.1962,
+        "lon": -79.8862,
+        "fuente": "verificado",
+        "referencia": "Mucho lote 2 etapa VICTORIA DEL RIO MZ 2937 V3, GUAYAQUIL",
+        "nivel": "ciudad"
+    },
+    "LA LIBERTAD :: CALLE 23 S\/N ENTRE AVDAS. 12 Y 13 LOCAL RODACAR (FRENTE A PERNIACERO)": {
+        "lat": -2.2333,
+        "lon": -80.9053,
+        "fuente": "verificado",
+        "referencia": "CALLE 23 S\/N ENTRE AVDAS. 12 Y 13, LOCAL RODACAR (FRENTE A PERNIACERO), LA LIBERTAD",
+        "nivel": "ciudad"
+    },
+    "MACHALA :: CDLA LOS VERGELES A LADO DE LA IGLESIA CASA COLOR ROSA CON 2 PORTONES NEGROS": {
+        "lat": -3.2586,
+        "lon": -79.9553,
+        "fuente": "verificado",
+        "referencia": "Cdla Los Vergeles a lado de la iglesia casa color rosa con 2 portones negros, MACHALA",
+        "nivel": "ciudad"
+    },
+    "PINAS :: AV MANUEL UBITICIO GALLARDO, SITIO EL PORTETE A 100 METROS DE LA REVISION VEHICULAR": {
+        "lat": -3.6803,
+        "lon": -79.6858,
+        "fuente": "verificado",
+        "referencia": "AV MANUEL UBITICIO GALLARDO, SITIO EL PORTETE A 100 METROS DE LA REVISIÓN VEHICULAR, PIÑAS",
+        "nivel": "ciudad"
+    },
+    "SANTO DOMINGO :: BARRIO LIBERTADOR, CALLE SARAGURO Y GUALACEO": {
+        "lat": -0.2600677,
+        "lon": -79.152663,
+        "fuente": "photon",
+        "precision": "pitch",
+        "referencia": "Barrio libertador, calle Saraguro y Gualaceo, Santo Domingo",
+        "nivel": "direccion"
+    },
+    "CHONE :: AV. ATAHUALPA, ENTRE MANUELA DE JESUS ALVAREZ Y 1 DE MAYO, CHONE, MANABI, ECUADOR": {
+        "lat": -0.6954869,
+        "lon": -80.0968855,
+        "fuente": "photon",
+        "precision": "secondary",
+        "referencia": "Av. Atahualpa, entre manuela de Jesús Álvarez y 1 de mayo, Chone, Manabi, Ecuador, CHONE",
+        "nivel": "direccion"
+    },
+    "MANTA :: ENTRADA ALTAMIRA A UNA CUADRA DE LA CALLE 113 FRENTE A PARRILLADAS LIDER LOCAL DIY REPOSTERIA COLOR ROSA MANTA-MANABI": {
+        "lat": -0.949,
+        "lon": -80.7264,
+        "fuente": "verificado",
+        "referencia": "Entrada Altamira a una cuadra de la calle 113 Frente a parrilladas lider Local Diy Repostería color Rosa Manta-Manabí, MANTA",
+        "nivel": "ciudad"
+    },
+    "CAYAMBE :: CALLE VIVAR ENTRE ASCASUBI Y ROCAFUERTE 0E0-38": {
+        "lat": 0.0403,
+        "lon": -78.147,
+        "fuente": "verificado",
+        "referencia": "calle Vivar entre Ascasubi y Rocafuerte 0e0-38, CAYAMBE",
+        "nivel": "ciudad"
+    },
+    "QUITO :: PSJ. ALMEIDA N60-77 Y AV. FLAVIO ALFARO, SECTOR EL PORVENIR. REFERENCIA PORTON VERDE CON NUMERACION ENTRE CASA AMARILLA Y BLANCA.": {
+        "lat": -0.3485181,
+        "lon": -78.5538933,
+        "fuente": "photon",
+        "precision": "residential",
+        "referencia": "Psj. Almeida N60-77 y Av. Flavio Alfaro, sector el Porvenir. Referencia portón verde con numeración entre casa amarilla y blanca., QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: DE LOS OLIVOS Y DE LOS MUELLES, CONJUNTO BALCONES DE TRIANA, SECTOR SAN ISIDRO DEL INCA": {
+        "lat": -0.1822687,
+        "lon": -78.5099512,
+        "fuente": "photon",
+        "precision": "park",
+        "referencia": "De los olivos y de los muelles, conjunto balcones de Triana, sector San Isidro del inca, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV. BRASIL N49-86 Y NICOLAS LOPEZ, SECTOR PINAR BAJO.": {
+        "lat": -0.1541453,
+        "lon": -78.4955622,
+        "fuente": "photon",
+        "precision": "pitch",
+        "referencia": "Av. Brasil N49-86 y Nicolás López, sector Pinar Bajo., QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: RUTA VIVA, INTERSECCION RETORNO A CUMBAYA, A LADO DEL REDONDEL, VIA RIO SANTIAGO, EDIFICIO AREZZO CUMBAYA": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": "Ruta Viva, intersección retorno a cumbaya, a lado del redondel, vía río santiago, Edificio Arezzo Cumbayá, QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: : MARTHA BUCARAM S42-100 ENTRE JOSE RODRIGUEZ Y 8 DE FEBRERO (TIMBRAR EN VIVERES KERLY)": {
+        "lat": -0.2299,
+        "lon": -78.5249,
+        "fuente": "verificado",
+        "referencia": ": Martha Bucaram s42-100 entre José Rodríguez y 8 de febrero (timbrar en víveres Kerly), QUITO",
+        "nivel": "ciudad"
+    },
+    "QUITO :: CHILLOGALLO SANTA BARBARA": {
+        "lat": -0.2664795,
+        "lon": -78.5565999,
+        "fuente": "photon",
+        "precision": "place_of_worship",
+        "referencia": "Chillogallo Santa Barbara, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV DE LA PRENSA Y ESPINOSA POLIT N64-29 COTOCOLLAO ALTOS DE FERRETERIA JARAMILLO (NO DEJAR EN LA FERRETERIA)": {
+        "lat": -0.1669941,
+        "lon": -78.4868626,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "Av de la prensa y espinosa polit n64-29 cotocollao altos de ferretería jaramillo (NO DEJAR EN LA FERRETERIA), QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AVENIDA DIEGO DE VASQUEZ N73-15 N73A": {
+        "lat": -0.1210531,
+        "lon": -78.4934825,
+        "fuente": "photon",
+        "precision": "primary",
+        "referencia": "Avenida Diego de Vásquez N73-15 N73A, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV. GIOVANNI CALLES Y CARAN LOCAL MEGA ELECTRONICA UNO": {
+        "lat": -0.1066265,
+        "lon": -78.4583343,
+        "fuente": "photon",
+        "precision": "secondary",
+        "referencia": "Av. Giovanni Calles y Caran Local Mega Electronica UNO, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: CALLE E1D- CASA N90-40 SECTOR CARCELEN BAJO": {
+        "lat": -0.076593,
+        "lon": -78.4629057,
+        "fuente": "photon",
+        "precision": "bus_stop",
+        "referencia": "calle E1D- casa N90-40, Sector Carcelen Bajo, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: SECTOR PUEBLO, AV.TERESA TIPANTA & OE2A S41-10 (REFERENCIA POR DONDE ENTRAN LOS BUSES INTERPROVINCIALES AL TERMINAL QUITUMBE A LA ALTURA DE LA COCA COLA)": {
+        "lat": -0.2729546,
+        "lon": -78.5294025,
+        "fuente": "photon",
+        "precision": "tertiary",
+        "referencia": "Sector Pueblo, Av.Teresa Tipanta & Oe2A S41-10 (referencia por donde entran los buses interprovinciales al terminal Quitumbe a la altura de la coca cola), QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: AV MALDONADO Y REINALDO SANTA CRUZ OE 1-40 DETRAS DE LA FARMACIA SANA SANA DE GUAMANI": {
+        "lat": -0.3186563,
+        "lon": -78.5499042,
+        "fuente": "photon",
+        "precision": "pharmacy",
+        "referencia": "Av Maldonado y Reinaldo Santa Cruz Oe 1-40 detrás de la farmacia Sana Sana de Guamani, QUITO",
+        "nivel": "direccion"
+    },
+    "QUITO :: PASAJE S14 OE5-97 Y LOS ENCUENTROS CIUDADELA UNION Y JUSTICIA": {
+        "lat": -0.2576844,
+        "lon": -78.5361149,
+        "fuente": "photon",
+        "precision": "childcare",
+        "referencia": "Pasaje S14 Oe5-97 y los encuentros Ciudadela Unión y justicia, QUITO",
+        "nivel": "direccion"
+    }
+}

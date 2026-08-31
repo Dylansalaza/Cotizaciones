@@ -1,0 +1,13 @@
+# Datos privados y secretos
+config.local.php
+data/uploads/*
+!data/uploads/.gitkeep
+
+# Caché regenerable
+data/distancias_cache.json
+
+# Archivos generados / temporales
+cotizacion_rutas_transervilog*.docx
+tmp_*
+_geocode*
+*.log

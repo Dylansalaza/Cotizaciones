@@ -1,0 +1,9 @@
+[
+  {"id": "camioneta", "nombre": "Camioneta / Van pequeña", "capacidad_kg": 1000, "capacidad_m3": 4,  "descripcion": "Ideal para pocos bultos y entregas urbanas ligeras."},
+  {"id": "nhr", "nombre": "Furgón NHR", "capacidad_kg": 2000, "capacidad_m3": 9,  "descripcion": "Camión liviano, bueno para rutas cortas y cargas medianas."},
+  {"id": "nkr", "nombre": "Camión NKR / Chasis mediano", "capacidad_kg": 4000, "capacidad_m3": 18, "descripcion": "Capacidad intermedia, uso frecuente en reparto interprovincial."},
+  {"id": "hdt", "nombre": "Camión HDT / FVR", "capacidad_kg": 8000, "capacidad_m3": 35, "descripcion": "Carga pesada, adecuado para rutas Sierra-Costa con volumen alto."},
+  {"id": "doble_eje", "nombre": "Camión doble eje / furgón grande", "capacidad_kg": 12000, "capacidad_m3": 55, "descripcion": "Para consolidados grandes de varias ciudades en una misma ruta."},
+  {"id": "tres_ejes", "nombre": "Camión 3 ejes / Trailer mediano", "capacidad_kg": 18000, "capacidad_m3": 90, "descripcion": "Rutas troncales con alto tonelaje (ej. Ruta 1 completa)."},
+  {"id": "trailer", "nombre": "Tráiler / Cabezal plataforma", "capacidad_kg": 30000, "capacidad_m3": 120, "descripcion": "Máxima capacidad, para cargas excepcionales o consolidado nacional."}
+]
