@@ -10,8 +10,14 @@
 <body>
 
 <header class="topbar">
-  <h1>📦 Cotizador de Encomiendas por Rutas</h1>
-  <p>Sube tu Excel de cotización y obtén peso, volumen, camión sugerido y ruta.</p>
+  <div class="topbar-inner">
+    <div class="logo">🚚</div>
+    <div>
+      <div class="brand">Transervilog · Transporte y Logística</div>
+      <h1>Cotizador de Encomiendas por Rutas</h1>
+      <p>Sube tu Excel de cotización y obtén peso, volumen, camión sugerido y la ruta óptima.</p>
+    </div>
+  </div>
 </header>
 
 <main class="container">
