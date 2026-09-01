@@ -114,6 +114,7 @@ try {
             $tramos[] = [
                 'ciudad' => $p['ciudad'], 'cliente' => $p['cliente'], 'direccion' => $p['direccion'],
                 'km_tramo' => round($km, 1), 'km_acumulado' => $acumulado, 'nivel' => $p['nivel'],
+                'lat' => $p['coords']['lat'], 'lon' => $p['coords']['lon'],
             ];
             $anteriorCoords = $p['coords'];
             $prevIdx = $idx;
@@ -159,7 +160,12 @@ try {
         'rutas' => $resultado,
     ];
 
-    echo json_encode(['ok' => true, 'rutas' => $resultado, 'sin_asignar' => $sinAsignar], JSON_UNESCAPED_UNICODE);
+    echo json_encode([
+        'ok' => true,
+        'rutas' => $resultado,
+        'sin_asignar' => $sinAsignar,
+        'hub' => ['lat' => $hub['lat'], 'lon' => $hub['lon'], 'nombre' => $hub['nombre']],
+    ], JSON_UNESCAPED_UNICODE);
 } catch (Exception $e) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => $e->getMessage()], JSON_UNESCAPED_UNICODE);

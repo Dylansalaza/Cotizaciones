@@ -3,6 +3,7 @@ const $ = (sel) => document.querySelector(sel);
 let rutasActuales = {};
 let rutaActiva = null;
 let cotizacionCargada = false;
+let hubCoords = null;
 
 async function cargarRutas() {
   const res = await fetch('api/rutas.php?accion=listar');
@@ -336,13 +337,24 @@ function pintarResultado(rutas) {
       const destino = t.cliente ? `${t.ciudad} — ${t.cliente}` : t.ciudad;
       const dir = t.direccion ? `<div class="tramo-dir">📌 ${t.direccion}</div>` : '';
       const aprox = (t.nivel && t.nivel !== 'direccion') ? ' <span class="badge-ciudad">aprox.</span>' : '';
+      const comoLlegar = (t.lat && t.lon)
+        ? `<a class="como-llegar" href="https://www.google.com/maps/dir/?api=1&destination=${t.lat},${t.lon}&travelmode=driving" target="_blank" rel="noopener">🧭 Cómo llegar</a>`
+        : '';
       return `<li>
           <span class="tramo-num">${i + 1}</span>
-          <span class="tramo-ruta"><strong>${destino}</strong>${aprox}${dir}</span>
+          <span class="tramo-ruta"><strong>${destino}</strong>${aprox}${dir}${comoLlegar}</span>
           <span class="tramo-km">${t.km_tramo} km</span>
           <span class="km-acumulado">acum. ${t.km_acumulado} km</span>
         </li>`;
     }).join('');
+
+    // Enlace a la ruta completa en Google Maps (hub → todas las paradas en orden).
+    const puntosMaps = [];
+    if (hubCoords) puntosMaps.push(`${hubCoords.lat},${hubCoords.lon}`);
+    rs.tramos.forEach(t => { if (t.lat && t.lon) puntosMaps.push(`${t.lat},${t.lon}`); });
+    const btnMaps = puntosMaps.length > 1
+      ? `<a class="btn-maps" href="https://www.google.com/maps/dir/${puntosMaps.join('/')}" target="_blank" rel="noopener">🧭 Abrir ruta completa en Google Maps</a>`
+      : '';
 
     // Precio del viaje = km total (solo ida) x multiplicador de la ruta.
     // Todas las rutas usan multiplicador 1 (precio = km); solo Oriente usa 1.25.
@@ -389,8 +401,11 @@ function pintarResultado(rutas) {
         ${cs.nota ? `<div class="nota">${cs.nota}</div>` : ''}
       </div>
       <div class="ruta-sugerida">
-        <strong>🗺️ Guía de entrega (orden y km acumulado por dirección):</strong>
-        ${r.optimizada ? '<span class="badge-opt">✨ orden óptimo</span>' : ''}
+        <div class="guia-header">
+          <strong>🗺️ Guía de entrega (orden y km acumulado por dirección):</strong>
+          ${r.optimizada ? '<span class="badge-opt">✨ orden óptimo</span>' : ''}
+        </div>
+        ${btnMaps}
         <ol class="tramos-lista guia">${tramosHtml || '<li>Sin direcciones para esta ruta</li>'}</ol>
         ${infoKilometraje}
       </div>
@@ -461,6 +476,7 @@ async function calcularDirecciones() {
     const res = await fetch('api/calcular_direcciones.php');
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
+    hubCoords = data.hub || null;
     pintarSinAsignar(data.sin_asignar);
     pintarResultado(data.rutas);
     if (estado) estado.innerHTML = '';
