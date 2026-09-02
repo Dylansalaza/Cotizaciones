@@ -4,6 +4,7 @@ let rutasActuales = {};
 let rutaActiva = null;
 let cotizacionCargada = false;
 let hubCoords = null;
+let preciosEditados = {};
 
 async function cargarRutas() {
   const res = await fetch('api/rutas.php?accion=listar');
@@ -260,6 +261,7 @@ function pintarResultado(rutas) {
   }
   card.style.display = 'block';
   cont.innerHTML = '';
+  preciosEditados = {};
 
   // Crear menú de navegación para resultados (HORIZONTAL)
   const menuResultados = document.createElement('div');
@@ -362,6 +364,7 @@ function pintarResultado(rutas) {
     const multiplicador = esOriente ? 1.25 : 1;
     const precioRuta = rs.km_total_ida * multiplicador;
     const etiquetaMult = esOriente ? ' (Oriente x 1.25)' : ' (x 1)';
+    preciosEditados[id] = Math.round(precioRuta * 100) / 100;
 
     const infoKilometraje = `
       <div class="resumen-ruta">
@@ -370,8 +373,8 @@ function pintarResultado(rutas) {
           <span class="ri-valor">${rs.km_total_ida} km</span>
         </div>
         <div class="resumen-item resumen-precio">
-          <span class="ri-label">💵 Costo estimado${etiquetaMult}</span>
-          <span class="ri-valor">$${precioRuta.toFixed(2)}</span>
+          <span class="ri-label">💵 Costo${etiquetaMult} · editable ✏️</span>
+          <span class="ri-valor precio-editable">$ <input type="number" class="input-precio" data-id="${id}" value="${precioRuta.toFixed(2)}" step="0.01" min="0"></span>
         </div>
       </div>
     `;
@@ -431,6 +434,27 @@ function pintarResultado(rutas) {
   if (ids.length > 0) {
     mostrarResultado(ids[0]);
   }
+  actualizarTotal();
+}
+
+// Suma todos los precios (editados) y muestra el TOTAL GENERAL.
+function actualizarTotal() {
+  const el = document.getElementById('total-general');
+  if (!el) return;
+  const total = Object.values(preciosEditados).reduce((s, v) => s + (parseFloat(v) || 0), 0);
+  el.innerHTML = `TOTAL GENERAL: <strong>$${total.toLocaleString('es-EC', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>`;
+  el.style.display = '';
+}
+
+// Editar el precio de una ruta actualiza el total en vivo.
+const contResultado = document.getElementById('resultado-lista');
+if (contResultado) {
+  contResultado.addEventListener('input', (e) => {
+    const inp = e.target.closest('.input-precio');
+    if (!inp) return;
+    preciosEditados[inp.dataset.id] = parseFloat(inp.value) || 0;
+    actualizarTotal();
+  });
 }
 
 function mostrarResultado(id) {
@@ -489,7 +513,33 @@ async function calcularDirecciones() {
 }
 
 const btnDescargarWord = document.getElementById('btn-descargar-word');
-if (btnDescargarWord) btnDescargarWord.addEventListener('click', () => { window.location = 'api/exportar_word.php'; });
+if (btnDescargarWord) {
+  btnDescargarWord.addEventListener('click', async () => {
+    btnDescargarWord.disabled = true;
+    const prev = btnDescargarWord.textContent;
+    btnDescargarWord.textContent = '⏳ Generando…';
+    try {
+      const fd = new FormData();
+      fd.append('precios', JSON.stringify(preciosEditados));
+      const res = await fetch('api/exportar_word.php', { method: 'POST', body: fd });
+      if (!res.ok) throw new Error('No se pudo generar el Word');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'cotizacion_rutas_transervilog.docx';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      btnDescargarWord.disabled = false;
+      btnDescargarWord.textContent = prev;
+    }
+  });
+}
 
 function renderDirecciones(data) {
   const cont = document.getElementById('resultado-direcciones');

@@ -46,7 +46,10 @@
   <section class="card" id="resultado-card" style="display:none;">
     <div class="rutas-header">
       <h2>3. Resultado por ruta</h2>
-      <button id="btn-descargar-word" class="btn btn-primary" style="display:none;">📄 Descargar Word</button>
+      <div class="acciones-resultado">
+        <span id="total-general" class="total-general" style="display:none;"></span>
+        <button id="btn-descargar-word" class="btn btn-primary" style="display:none;">📄 Descargar Word</button>
+      </div>
     </div>
     <div id="estado-calculo"></div>
     <div id="resultado-lista"></div>
