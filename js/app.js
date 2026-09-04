@@ -222,6 +222,8 @@ $('#form-upload').addEventListener('submit', async (e) => {
     cotizacionCargada = true;
     // La ruta por dirección exacta se calcula y muestra automáticamente.
     await calcularDirecciones();
+    // Habilitar el botón de ubicaciones (función independiente, a pedido).
+    mostrarBotonUbicaciones();
   } catch (err) {
     $('#upload-status').innerHTML = `<span class="msg-error">✖ ${err.message}</span>`;
   }
@@ -539,6 +541,241 @@ if (btnDescargarWord) {
       btnDescargarWord.textContent = prev;
     }
   });
+}
+
+// ==================== UBICACIONES PARA COMPARTIR (función independiente) ====================
+// Muestra los puntos exactos de cada entrega, agrupados por PROVINCIA o por
+// CIUDAD (a elección), y permite compartir cada grupo por WhatsApp. No calcula
+// km ni precios: es una vista aparte de la salida de kilometraje. Se carga solo
+// cuando el usuario pulsa el botón "Ver ubicaciones".
+let ubicacionesData = null;       // { puntos: [...], total_puntos, sin_ubicar }
+let modoAgrupacion = 'provincia'; // 'provincia' | 'ciudad' | 'ruta'
+
+// Muestra la tarjeta y su botón una vez que hay una cotización cargada.
+function mostrarBotonUbicaciones() {
+  const card = document.getElementById('ubicaciones-card');
+  if (card) card.style.display = 'block';
+}
+
+const btnVerUbicaciones = document.getElementById('btn-ver-ubicaciones');
+if (btnVerUbicaciones) {
+  btnVerUbicaciones.addEventListener('click', cargarUbicaciones);
+}
+
+// Toggle de agrupación (provincia / ciudad): re-pinta sin volver a geolocalizar.
+const ubiControles = document.getElementById('ubicaciones-controles');
+if (ubiControles) {
+  ubiControles.addEventListener('click', (e) => {
+    const btn = e.target.closest('.ubi-toggle-btn');
+    if (!btn) return;
+    modoAgrupacion = btn.dataset.modo;
+    document.querySelectorAll('.ubi-toggle-btn').forEach(b =>
+      b.classList.toggle('activo', b === btn));
+    if (ubicacionesData) pintarUbicaciones();
+  });
+}
+
+async function cargarUbicaciones() {
+  const cont = document.getElementById('ubicaciones-lista');
+  const estado = document.getElementById('ubicaciones-estado');
+  const controles = document.getElementById('ubicaciones-controles');
+  const btn = document.getElementById('btn-ver-ubicaciones');
+  if (!cont) return;
+
+  if (btn) { btn.disabled = true; }
+  if (estado) estado.innerHTML = '<p class="cargando">⏳ Ubicando los puntos exactos… (la primera vez puede tardar; luego es rápido)</p>';
+  cont.innerHTML = '';
+
+  try {
+    const res = await fetch('api/ubicaciones_provincia.php');
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error);
+    ubicacionesData = data;
+    if (estado) estado.innerHTML = '';
+    if (controles) controles.style.display = '';
+    pintarUbicaciones();
+  } catch (err) {
+    if (estado) estado.innerHTML = '';
+    cont.innerHTML = `<span class="msg-error">✖ ${err.message}</span>`;
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '🔄 Actualizar ubicaciones'; }
+  }
+}
+
+// Agrupa los puntos según el modo elegido y los pinta.
+function pintarUbicaciones() {
+  const cont = document.getElementById('ubicaciones-lista');
+  const resumen = document.getElementById('ubicaciones-resumen');
+  const puntos = (ubicacionesData && ubicacionesData.puntos) || [];
+
+  // Agrupar por la clave del modo actual (provincia | ciudad | ruta).
+  const mapaClaves = {
+    provincia: { key: 'provincia_key', nombre: 'provincia' },
+    ciudad:    { key: 'ciudad_key',    nombre: 'ciudad' },
+    ruta:      { key: 'ruta_key',      nombre: 'ruta' },
+  };
+  const conf = mapaClaves[modoAgrupacion] || mapaClaves.provincia;
+  const grupos = {};
+  for (const p of puntos) {
+    const k = p[conf.key] || '—';
+    if (!grupos[k]) grupos[k] = { nombre: p[conf.nombre] || '—', subtitulo: p.ruta_grupo || '', puntos: [] };
+    grupos[k].puntos.push(p);
+  }
+
+  // Ordenar grupos por nombre y puntos por ciudad/cliente.
+  const claves = Object.keys(grupos).sort((a, b) =>
+    grupos[a].nombre.localeCompare(grupos[b].nombre, 'es'));
+  claves.forEach(k => {
+    grupos[k].puntos.sort((a, b) =>
+      (a.ciudad + a.cliente).localeCompare(b.ciudad + b.cliente, 'es'));
+  });
+
+  if (resumen) {
+    const etiquetas = { provincia: 'provincia(s)', ciudad: 'ciudad(es)', ruta: 'ruta(s)' };
+    const etiqueta = etiquetas[modoAgrupacion] || 'grupo(s)';
+    let txt = `${ubicacionesData.total_puntos || puntos.length} ubicaciones en ${claves.length} ${etiqueta}`;
+    if (ubicacionesData.sin_ubicar) txt += ` · ${ubicacionesData.sin_ubicar} sin ubicar`;
+    resumen.textContent = txt;
+  }
+
+  if (claves.length === 0) {
+    cont.innerHTML = '<p class="ayuda">No hay ubicaciones para mostrar.</p>';
+    return;
+  }
+
+  cont.innerHTML = '';
+  for (const k of claves) {
+    const g = grupos[k];
+    // En modo "ciudad" el título del grupo ya es la ciudad, así que en cada
+    // punto mostramos el cliente; en modo "provincia" mostramos ciudad + cliente.
+    const items = g.puntos.map((p, i) => {
+      const titulo = modoAgrupacion === 'ciudad'
+        ? (p.cliente || p.ciudad)
+        : (p.cliente ? `${p.ciudad} — ${p.cliente}` : p.ciudad);
+      const dir = p.direccion ? `<div class="ubi-dir">📌 ${p.direccion}</div>` : '';
+      const aprox = (p.nivel && p.nivel !== 'direccion')
+        ? ' <span class="ubi-badge">aprox.</span>' : '';
+      const cajas = p.cajas > 0
+        ? ` <span class="ubi-cajas">📦 ${fmt(p.cajas)} caja${p.cajas === 1 ? '' : 's'}</span>` : '';
+      const mapsUrl = `https://www.google.com/maps?q=${p.lat},${p.lon}`;
+      return `<li class="ubi-item">
+          <span class="ubi-num">${i + 1}</span>
+          <div class="ubi-info">
+            <div class="ubi-titulo"><strong>${titulo}</strong>${aprox}${cajas}</div>
+            ${dir}
+          </div>
+          <div class="ubi-acciones">
+            <a class="ubi-link" href="${mapsUrl}" target="_blank" rel="noopener">📍 Ver</a>
+            <a class="ubi-wa-mini" href="${enlaceWhatsAppPunto(g.nombre, p)}" target="_blank" rel="noopener" title="Compartir esta ubicación">🟢</a>
+          </div>
+        </li>`;
+    }).join('');
+
+    // Subtítulo solo en modo "ruta fija": el grupo de la ruta (ej. RUTA 1).
+    const subt = (modoAgrupacion === 'ruta' && g.subtitulo)
+      ? `<div class="ubi-subtitulo">${g.subtitulo}</div>` : '';
+
+    // Guías por ciudad: una guía de Google Maps por cada ciudad del grupo, así
+    // ninguna supera el límite de ~10 paradas de Maps y se ven TODOS los puntos.
+    // Si una ciudad tiene más de 10 puntos, se parte en tramos (1/2, 2/2…).
+    const guias = subGuiasPorCiudad(g.puntos);
+    const btnsGuia = guias.map(gu => {
+      const etiqueta = gu.partes > 1 ? `${gu.ciudad} (${gu.parte}/${gu.partes})` : gu.ciudad;
+      const ico = gu.count > 1 ? '🗺️' : '📍';
+      return `<a class="btn-guia" href="${gu.url}" target="_blank" rel="noopener" title="${gu.count} punto(s)">${ico} ${etiqueta}</a>`;
+    }).join('');
+    const barraGuias = btnsGuia
+      ? `<div class="ubi-guias"><span class="ubi-guias-label">Guías por ciudad:</span>${btnsGuia}</div>`
+      : '';
+
+    const box = document.createElement('div');
+    box.className = 'ubi-provincia';
+    box.innerHTML = `
+      <div class="ubi-provincia-top">
+        <div>
+          ${subt}
+          <h3>${g.nombre}</h3>
+          <span class="ubi-conteo">${g.puntos.length} ubicación(es)</span>
+        </div>
+        <div class="ubi-botones">
+          <a class="btn-wa" href="${enlaceWhatsAppGrupo(g)}" target="_blank" rel="noopener">
+            🟢 Compartir por WhatsApp
+          </a>
+        </div>
+      </div>
+      ${barraGuias}
+      <ul class="ubi-puntos">${items}</ul>
+    `;
+    cont.appendChild(box);
+  }
+}
+
+// Límite práctico de paradas por guía de Google Maps (evita que Maps recorte
+// puntos en rutas largas). Se aplica por ciudad.
+const MAX_PARADAS_GUIA = 10;
+
+// Construye una guía de Google Maps por cada CIUDAD del grupo, encadenando sus
+// puntos con el formato /maps/dir/lat,lon/... Así ninguna guía supera el límite
+// de Maps y se abren TODOS los puntos. Si una ciudad tiene más de MAX puntos, se
+// parte en varios tramos. Devuelve [{ciudad, url, count, parte, partes}].
+function subGuiasPorCiudad(puntos) {
+  // Agrupar por ciudad preservando el orden en que aparecen.
+  const orden = [];
+  const porCiudad = {};
+  for (const p of (puntos || [])) {
+    if (p.lat == null || p.lon == null) continue;
+    const k = p.ciudad_key || p.ciudad || '—';
+    if (!porCiudad[k]) { porCiudad[k] = { ciudad: p.ciudad || '—', puntos: [] }; orden.push(k); }
+    porCiudad[k].puntos.push(p);
+  }
+
+  const guias = [];
+  for (const k of orden) {
+    const c = porCiudad[k];
+    const partes = Math.ceil(c.puntos.length / MAX_PARADAS_GUIA);
+    for (let i = 0; i < partes; i++) {
+      const chunk = c.puntos.slice(i * MAX_PARADAS_GUIA, (i + 1) * MAX_PARADAS_GUIA);
+      const coords = chunk.map(p => `${p.lat},${p.lon}`);
+      const url = coords.length >= 2
+        ? 'https://www.google.com/maps/dir/' + coords.join('/')   // ruta encadenada
+        : `https://www.google.com/maps?q=${coords[0]}`;            // punto único
+      guias.push({ ciudad: c.ciudad, url, count: chunk.length, parte: i + 1, partes });
+    }
+  }
+  return guias;
+}
+
+// Mensaje de WhatsApp con TODAS las ubicaciones de un grupo (provincia/ciudad/ruta),
+// incluyendo al final las guías de ruta por ciudad en Google Maps.
+function enlaceWhatsAppGrupo(g) {
+  const lineas = [`📍 Ubicaciones - ${g.nombre}`, ''];
+  g.puntos.forEach((p, i) => {
+    const titulo = p.cliente ? `${p.ciudad} - ${p.cliente}` : p.ciudad;
+    const cajas = p.cajas > 0 ? ` (📦 ${fmt(p.cajas)} caja${p.cajas === 1 ? '' : 's'})` : '';
+    lineas.push(`${i + 1}. ${titulo}${cajas}`);
+    if (p.direccion) lineas.push(`   ${p.direccion}`);
+    lineas.push(`   https://www.google.com/maps?q=${p.lat},${p.lon}`);
+    lineas.push('');
+  });
+  const guias = subGuiasPorCiudad(g.puntos);
+  if (guias.length) {
+    lineas.push('🗺️ Guías de ruta por ciudad:');
+    guias.forEach(gu => {
+      const etiqueta = gu.partes > 1 ? `${gu.ciudad} (${gu.parte}/${gu.partes})` : gu.ciudad;
+      lineas.push(`• ${etiqueta}: ${gu.url}`);
+    });
+  }
+  return 'https://wa.me/?text=' + encodeURIComponent(lineas.join('\n').trim());
+}
+
+// Mensaje de WhatsApp con UNA sola ubicación.
+function enlaceWhatsAppPunto(nombreGrupo, p) {
+  const titulo = p.cliente ? `${p.ciudad} - ${p.cliente}` : p.ciudad;
+  const lineas = [`📍 Ubicación (${nombreGrupo})`, titulo];
+  if (p.cajas > 0) lineas.push(`📦 ${fmt(p.cajas)} caja${p.cajas === 1 ? '' : 's'}`);
+  if (p.direccion) lineas.push(p.direccion);
+  lineas.push(`https://www.google.com/maps?q=${p.lat},${p.lon}`);
+  return 'https://wa.me/?text=' + encodeURIComponent(lineas.join('\n'));
 }
 
 function renderDirecciones(data) {

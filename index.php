@@ -43,6 +43,25 @@
     <div id="sin-asignar-lista"></div>
   </section>
 
+  <section class="card" id="ubicaciones-card" style="display:none;">
+    <div class="rutas-header">
+      <h2>📍 Ubicaciones para compartir</h2>
+      <button id="btn-ver-ubicaciones" class="btn btn-primary">📍 Ver ubicaciones</button>
+    </div>
+    <p class="ubi-ayuda">Puntos exactos de entrega. Agrúpalos por provincia o por ciudad y compártelos por WhatsApp.</p>
+    <div id="ubicaciones-controles" style="display:none;">
+      <div class="ubi-toggle" role="group" aria-label="Agrupar por">
+        <span class="ubi-toggle-label">Agrupar por:</span>
+        <button class="ubi-toggle-btn activo" data-modo="provincia">Provincia</button>
+        <button class="ubi-toggle-btn" data-modo="ciudad">Ciudad</button>
+        <button class="ubi-toggle-btn" data-modo="ruta">Ruta fija</button>
+      </div>
+      <span id="ubicaciones-resumen" class="ubi-resumen"></span>
+    </div>
+    <div id="ubicaciones-estado"></div>
+    <div id="ubicaciones-lista"></div>
+  </section>
+
   <section class="card" id="resultado-card" style="display:none;">
     <div class="rutas-header">
       <h2>3. Resultado por ruta</h2>

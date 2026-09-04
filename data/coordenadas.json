@@ -920,5 +920,12 @@
         "fuente": "verificado",
         "referencia": "Felix Oralabal N45-91 y Zamora, QUITO",
         "nivel": "ciudad"
+    },
+    "GUALACEO :: COLON ENTRE VICENTE PENA REYES Y LUISCORDERO. LOCAL: KAIVOX (10 - 54)": {
+        "lat": -2.8886,
+        "lon": -78.7772,
+        "fuente": "verificado",
+        "referencia": "COLON ENTRE VICENTE PENA REYES Y LUISCORDERO. LOCAL: KAIVOX (10 - 54), GUALACEO",
+        "nivel": "ciudad"
     }
 }
