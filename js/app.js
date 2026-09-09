@@ -517,19 +517,26 @@ async function calcularDirecciones() {
 const btnDescargarWord = document.getElementById('btn-descargar-word');
 if (btnDescargarWord) {
   btnDescargarWord.addEventListener('click', async () => {
+    // Pedir el nombre del cliente antes de generar el Word.
+    const entrada = prompt('Escribe el nombre del cliente para la cotización:', '');
+    if (entrada === null) return; // el usuario canceló
+    const cliente = entrada.trim();
+
     btnDescargarWord.disabled = true;
     const prev = btnDescargarWord.textContent;
     btnDescargarWord.textContent = '⏳ Generando…';
     try {
       const fd = new FormData();
       fd.append('precios', JSON.stringify(preciosEditados));
+      fd.append('cliente', cliente);
       const res = await fetch('api/exportar_word.php', { method: 'POST', body: fd });
       if (!res.ok) throw new Error('No se pudo generar el Word');
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'cotizacion_rutas_transervilog.docx';
+      const slug = cliente.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+      a.download = slug ? `cotizacion_${slug}.docx` : 'cotizacion_rutas_transervilog.docx';
       document.body.appendChild(a);
       a.click();
       a.remove();

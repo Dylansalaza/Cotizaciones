@@ -21,6 +21,10 @@ if (!empty($_POST['precios'])) {
     $tmp = json_decode($_POST['precios'], true);
     if (is_array($tmp)) $preciosPost = $tmp;
 }
+
+// Nombre del cliente (opcional): se escribe en la línea "Cliente:" del Word.
+// Si no viene, se mantiene la raya en blanco para llenar a mano.
+$cliente = isset($_POST['cliente']) ? trim((string)$_POST['cliente']) : '';
 $precioDe = function ($id) use ($rutas, $preciosPost) {
     if (isset($preciosPost[$id]) && is_numeric($preciosPost[$id])) return (float)$preciosPost[$id];
     return isset($rutas[$id]) ? (float)($rutas[$id]['precio'] ?? 0) : 0.0;
@@ -106,9 +110,11 @@ $body .= tabla([5100, 4700],
 
 $body .= para('COTIZACIÓN DE RUTAS', ['bold' => true, 'size' => 34, 'color' => '1B3A5C', 'before' => 280, 'after' => 60]);
 $body .= para('Fecha: ' . $fecha, ['size' => 20, 'color' => '202B36', 'after' => 40]);
+$clienteRun = $cliente !== ''
+    ? run($cliente, ['size' => 20, 'color' => '202B36'])
+    : run('______________________________________________', ['size' => 20, 'color' => '202B36']);
 $body .= para(
-    run('Cliente: ', ['bold' => true, 'size' => 20, 'color' => '202B36'])
-    . run('______________________________________________', ['size' => 20, 'color' => '202B36']),
+    run('Cliente: ', ['bold' => true, 'size' => 20, 'color' => '202B36']) . $clienteRun,
     ['raw' => true, 'after' => 40]
 );
 $body .= para('Tarifario referencial por ruta fija, según kilometraje.', ['italic' => true, 'size' => 18, 'color' => '5A6B7A', 'after' => 220]);
@@ -169,8 +175,16 @@ $zip->addFromString('_rels/.rels', $rels);
 $zip->addFromString('word/document.xml', $documentXml);
 $zip->close();
 
+// Nombre de archivo: incluye al cliente si se indicó.
+$nombreArchivo = 'cotizacion_rutas_transervilog';
+if ($cliente !== '') {
+    $slug = preg_replace('/\s+/', '_', $cliente);
+    $slug = preg_replace('/[^A-Za-z0-9_\-]/', '', $slug);
+    if ($slug !== '') $nombreArchivo = 'cotizacion_' . $slug;
+}
+
 header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
-header('Content-Disposition: attachment; filename="cotizacion_rutas_transervilog.docx"');
+header('Content-Disposition: attachment; filename="' . $nombreArchivo . '.docx"');
 header('Content-Length: ' . filesize($tmp));
 readfile($tmp);
 @unlink($tmp);
