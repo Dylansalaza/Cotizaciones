@@ -6,6 +6,27 @@ class CotizacionParser
     public static function parse(string $filepath): array
     {
         $rows = XlsxReader::read($filepath);
+
+        // Existen dos formatos de Excel de cotización:
+        //  - "detallado": trae columnas LARGO/ANCHO/ALTO y filas de resumen
+        //    "Total <ciudad>" (formato clásico, p. ej. COTIZACIÓN GC46). El
+        //    volumen se calcula a partir de las dimensiones y las ciudades se
+        //    arman leyendo las filas "Total <ciudad>".
+        //  - "resumen": trae directamente Nro Cajas / Peso total / CBM ya
+        //    calculados por cada cliente, SIN dimensiones ni filas "Total"
+        //    (p. ej. "Cotización Envibox"). Cada fila es una ciudad+cliente.
+        if (self::detectarFormato($rows) === 'resumen') {
+            return self::parseResumen($rows);
+        }
+
+        return self::parseDetallado($rows);
+    }
+
+    /**
+     * Formato clásico: dimensiones LARGO/ANCHO/ALTO y filas "Total <ciudad>".
+     */
+    private static function parseDetallado(array $rows): array
+    {
         $ciudades = [];
         $provinciaActual = 'PICHINCHA'; 
         $ciudadActual = '';
@@ -184,6 +205,197 @@ class CotizacionParser
             $quitoData['peso_ton'] = round($quitoData['peso_kg'] / 1000, 3);
             $ciudades[] = $quitoData;
         }
+
+        return array_values($ciudades);
+    }
+
+    /**
+     * Decide qué formato tiene el Excel mirando la fila de encabezados.
+     * Si el encabezado incluye columnas de dimensiones (LARGO/ANCHO/ALTO) es
+     * el formato "detallado"; si no, y trae una columna de cajas, es "resumen".
+     * Por defecto devuelve "detallado" para conservar el comportamiento previo.
+     */
+    private static function detectarFormato(array $rows): string
+    {
+        foreach ($rows as $row) {
+            $etiquetas = [];
+            foreach ($row as $v) {
+                $etiquetas[] = self::normalize((string)($v ?? ''));
+            }
+            $todo = '|' . implode('|', $etiquetas) . '|';
+
+            // Es la fila de encabezados si contiene PROVINCIA y CIUDAD.
+            if (strpos($todo, '|PROVINCIA|') === false || strpos($todo, '|CIUDAD|') === false) {
+                continue;
+            }
+
+            $tieneDimensiones = strpos($todo, '|LARGO|') !== false
+                || strpos($todo, '|ANCHO|') !== false
+                || strpos($todo, '|ALTO|') !== false;
+
+            return $tieneDimensiones ? 'detallado' : 'resumen';
+        }
+
+        return 'detallado';
+    }
+
+    /**
+     * A partir de la fila de encabezados, ubica el índice de cada columna
+     * relevante para el formato "resumen". Es tolerante a que cambien de
+     * posición mientras el título sea reconocible.
+     */
+    private static function mapearColumnas(array $header): array
+    {
+        $map = [
+            'provincia' => null, 'ciudad' => null, 'cliente' => null,
+            'direccion' => null, 'cajas' => null, 'peso' => null, 'volumen' => null,
+        ];
+
+        foreach ($header as $i => $v) {
+            $l = self::normalize((string)($v ?? ''));
+            if ($l === '') continue;
+
+            if ($map['provincia'] === null && strpos($l, 'PROVINCIA') !== false) {
+                $map['provincia'] = $i;
+            } elseif ($map['ciudad'] === null && strpos($l, 'CIUDAD') !== false) {
+                $map['ciudad'] = $i;
+            } elseif ($map['cliente'] === null && $l === 'CLIENTE') {
+                // "CLIENTE" exacto, para no confundir con "CODIGO CLIENTE".
+                $map['cliente'] = $i;
+            } elseif ($map['direccion'] === null && strpos($l, 'DIRECCION') !== false) {
+                $map['direccion'] = $i;
+            } elseif ($map['cajas'] === null && strpos($l, 'CAJA') !== false) {
+                $map['cajas'] = $i;
+            } elseif ($map['peso'] === null && strpos($l, 'PESO') !== false) {
+                $map['peso'] = $i;
+            } elseif ($map['volumen'] === null &&
+                      (strpos($l, 'CBM') !== false || strpos($l, 'VOLUMEN') !== false || strpos($l, 'M3') !== false)) {
+                $map['volumen'] = $i;
+            }
+        }
+
+        // Respaldo con las posiciones del formato Envibox por si algún título
+        // no se reconoció (A=provincia, B=ciudad, C=cliente, F=dirección,
+        // G=cajas, H=peso, I=cbm).
+        $map['provincia'] = $map['provincia'] ?? 0;
+        $map['ciudad']    = $map['ciudad']    ?? 1;
+        $map['cliente']   = $map['cliente']   ?? 2;
+        $map['direccion'] = $map['direccion'] ?? 5;
+        $map['cajas']     = $map['cajas']     ?? 6;
+        $map['peso']      = $map['peso']      ?? 7;
+        $map['volumen']   = $map['volumen']   ?? 8;
+
+        return $map;
+    }
+
+    /**
+     * Formato "resumen" (p. ej. Envibox): cada fila trae ciudad, cliente,
+     * dirección y los totales ya calculados (cajas, peso, CBM). No hay filas
+     * "Total <ciudad>", así que las ciudades se acumulan fila por fila.
+     */
+    private static function parseResumen(array $rows): array
+    {
+        // 1. Localizar la fila de encabezados y mapear columnas.
+        $headerIndex = null;
+        $map = null;
+        foreach ($rows as $i => $row) {
+            $etiquetas = [];
+            foreach ($row as $v) {
+                $etiquetas[] = self::normalize((string)($v ?? ''));
+            }
+            $todo = '|' . implode('|', $etiquetas) . '|';
+            if (strpos($todo, '|PROVINCIA|') !== false && strpos($todo, '|CIUDAD|') !== false) {
+                $headerIndex = $i;
+                $map = self::mapearColumnas($row);
+                break;
+            }
+        }
+        if ($map === null) {
+            return [];
+        }
+
+        $ciudades = [];
+        $provinciaActual = 'PICHINCHA';
+        $ciudadActual = '';   // texto original (para mostrar)
+        $clienteActual = '';  // se arrastra a filas de continuación
+        $direccionActual = '';
+
+        foreach ($rows as $i => $row) {
+            if ($i <= $headerIndex) continue; // saltar encabezados y lo previo
+
+            $colProv    = self::val($row, $map['provincia']);
+            $colCiudad  = self::val($row, $map['ciudad']);
+            $colCliente = self::val($row, $map['cliente']);
+            $colDir     = self::val($row, $map['direccion']);
+            $cajas      = self::num($row, $map['cajas']);
+            $peso       = self::num($row, $map['peso']) ?? 0;
+            $volumen    = self::num($row, $map['volumen']) ?? 0;
+
+            // Filas de resumen tipo "Total ..." (por si el archivo las trae).
+            $esFilaResumen = (stripos((string)($colProv ?? ''), 'Total') === 0)
+                || (stripos((string)($colCiudad ?? ''), 'Total') === 0)
+                || (stripos((string)($colCliente ?? ''), 'Total') === 0);
+
+            // Arrastrar provincia / ciudad / cliente / dirección.
+            if ($colProv !== null && stripos((string)$colProv, 'Total') === false
+                && trim((string)$colProv) !== '') {
+                $provinciaActual = trim((string)$colProv);
+            }
+            if ($colCiudad !== null && stripos((string)$colCiudad, 'Total') === false
+                && trim((string)$colCiudad) !== '') {
+                $ciudadActual = trim((string)$colCiudad);
+            }
+            if ($colCliente !== null && trim((string)$colCliente) !== '' && !$esFilaResumen) {
+                $clienteActual = trim((string)$colCliente);
+            }
+            if ($colDir !== null && trim((string)$colDir) !== '') {
+                $direccionActual = trim((string)$colDir);
+            }
+
+            if ($esFilaResumen) continue;
+            if ($cajas === null || $cajas <= 0) continue;
+            if ($ciudadActual === '') continue;
+
+            $key = self::normalize($ciudadActual);
+            if (!isset($ciudades[$key])) {
+                $ciudades[$key] = [
+                    'ciudad' => $ciudadActual,
+                    'provincia' => $provinciaActual,
+                    'cajas' => 0,
+                    'volumen_m3' => 0,
+                    'peso_kg' => 0,
+                    'direcciones' => [],
+                    'es_quito' => ($key === 'QUITO'),
+                ];
+            }
+            $ciudades[$key]['cajas']      += (float)$cajas;
+            $ciudades[$key]['volumen_m3'] += (float)$volumen;
+            $ciudades[$key]['peso_kg']    += (float)$peso;
+
+            // Dirección exacta por cliente (clave = dirección + cliente para no
+            // fusionar clientes distintos que compartan un mismo edificio).
+            $claveDir = ($direccionActual !== '' ? $direccionActual : '(sin dirección)')
+                . '||' . self::normalize($clienteActual);
+            if (!isset($ciudades[$key]['direcciones'][$claveDir])) {
+                $ciudades[$key]['direcciones'][$claveDir] = [
+                    'direccion' => $direccionActual,
+                    'cliente' => $clienteActual,
+                    'cajas' => 0,
+                    'volumen_m3' => 0,
+                    'peso_kg' => 0,
+                ];
+            }
+            $ciudades[$key]['direcciones'][$claveDir]['cajas']      += (float)$cajas;
+            $ciudades[$key]['direcciones'][$claveDir]['volumen_m3'] += (float)$volumen;
+            $ciudades[$key]['direcciones'][$claveDir]['peso_kg']    += (float)$peso;
+        }
+
+        // Reindexar direcciones y agregar peso en toneladas.
+        foreach ($ciudades as &$c) {
+            $c['direcciones'] = array_values($c['direcciones']);
+            $c['peso_ton'] = round($c['peso_kg'] / 1000, 3);
+        }
+        unset($c);
 
         return array_values($ciudades);
     }
