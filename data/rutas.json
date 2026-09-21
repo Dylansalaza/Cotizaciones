@@ -17,10 +17,14 @@
         "grupo": "RUTA 1 - Rutas de seguimiento de encomiendas",
         "lugares": [
             "GUAYAQUIL",
+            "DAULE",
+            "DURAN",
             "BUCAY",
             "ALFREDO BAQUERIZO MORENO-JUJAN",
             "EL EMPALME",
             "MILAGRO",
+            "VENTANAS",
+            "PALENQUE",
             "SANTA ELENA",
             "LA LIBERTAD",
             "QUEVEDO",
@@ -33,6 +37,7 @@
         "grupo": "RUTA 1 - Rutas de seguimiento de encomiendas",
         "lugares": [
             "PUYO",
+            "TENA",
             "LAGO AGRIO",
             "CUYABENO"
         ]
@@ -54,14 +59,16 @@
             "QUITO",
             "QUITO SUR",
             "QUITO NORTE",
-            "EL VALLE"
+            "EL VALLE",
+            "RUMIÑAHUI"
         ]
     },
     "ruta_individual": {
         "nombre": "RUTA INDIVIDUAL",
         "grupo": "INDIVIDUAL",
         "lugares": [
-            "CAYAMBE"
+            "CAYAMBE",
+            "IBARRA"
         ]
     }
 }

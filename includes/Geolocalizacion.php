@@ -26,6 +26,20 @@ class Geolocalizacion
     private const GOOGLE_DM = 'https://maps.googleapis.com/maps/api/distancematrix/json';
     private const USER_AGENT = 'cotizador-encomiendas/1.0 (logistica interna)';
 
+    // Robustez de red: en hostings gratuitos (p. ej. Render) los servicios
+    // públicos de geolocalización (Nominatim/Photon/OSRM) suelen ir lentos,
+    // limitar por tasa o estar bloqueados. Para que el cálculo NUNCA se quede
+    // colgado y siempre termine usando las coordenadas de ciudad como respaldo:
+    //  - cada petición tiene un timeout corto,
+    //  - hay un presupuesto de tiempo total por cálculo, y
+    //  - tras varios fallos seguidos se deja de intentar la red en esta corrida.
+    private const TIME_BUDGET = 60;   // segundos máx. gastados en red por cálculo
+    private const MAX_FALLOS  = 3;    // fallos seguidos antes de apagar la red
+
+    private static bool  $redCaida   = false; // se apagó la red en esta corrida
+    private static int   $fallosRed  = 0;     // fallos de conexión consecutivos
+    private static ?float $limiteRed = null;  // instante límite del presupuesto
+
     private static function coordsPath(): string { return __DIR__ . '/../data/coordenadas.json'; }
     private static function cachePath(): string  { return __DIR__ . '/../data/distancias_cache.json'; }
     private static function configPath(): string { return __DIR__ . '/../config.local.php'; }
@@ -247,8 +261,8 @@ class Geolocalizacion
         $resp = self::httpGet(self::NOMINATIM . '?' . http_build_query([
             'q' => $q, 'format' => 'jsonv2', 'limit' => 1, 'countrycodes' => 'ec',
         ]));
-        usleep(1100000); // Nominatim: máx 1 petición por segundo
         if ($resp === null) return null;
+        usleep(1100000); // Nominatim: máx 1 petición por segundo (solo si hubo respuesta)
         $j = json_decode($resp, true);
         if (!is_array($j) || empty($j[0]['lat'])) return null;
         return ['lat' => (float)$j[0]['lat'], 'lon' => (float)$j[0]['lon'], 'tipo' => $j[0]['type'] ?? ''];
@@ -467,11 +481,18 @@ class Geolocalizacion
 
     private static function httpGet(string $url): ?string
     {
+        // Si ya se apagó la red en esta corrida (servicios inaccesibles), no
+        // volvemos a intentar: devolvemos null al instante y el llamador cae a
+        // las coordenadas de ciudad. Así el cálculo nunca se cuelga.
+        if (self::$redCaida) return null;
+        if (self::$limiteRed === null) self::$limiteRed = microtime(true) + self::TIME_BUDGET;
+        if (microtime(true) > self::$limiteRed) { self::$redCaida = true; return null; }
+
         $c = curl_init($url);
         curl_setopt_array($c, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 25,
-            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_CONNECTTIMEOUT => 4,
             CURLOPT_USERAGENT => self::USER_AGENT,
             CURLOPT_FOLLOWLOCATION => true,
             // XAMPP en Windows suele no traer bundle de CA; estos son
@@ -479,9 +500,20 @@ class Geolocalizacion
             CURLOPT_SSL_VERIFYPEER => false,
         ]);
         $r = curl_exec($c);
+        $errno = curl_errno($c);
         $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
         curl_close($c);
-        if ($r === false || $code < 200 || $code >= 300) return null;
+
+        // Fallo de conexión (sin red, DNS, timeout, bloqueo del proxy 403/407) o
+        // respuesta de límite/servidor: cuenta como fallo de red. Tras MAX_FALLOS
+        // seguidos apagamos la red para el resto del cálculo.
+        if ($r === false || $errno !== 0 || $code === 0
+            || in_array($code, [403, 407, 408, 429], true) || $code >= 500) {
+            if (++self::$fallosRed >= self::MAX_FALLOS) self::$redCaida = true;
+            return null;
+        }
+        self::$fallosRed = 0; // hubo respuesta válida del servidor
+        if ($code < 200 || $code >= 300) return null;
         return (string)$r;
     }
 }
