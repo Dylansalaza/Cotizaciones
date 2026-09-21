@@ -4,6 +4,48 @@
         "lat": -0.3576526,
         "lon": -78.4908283
     },
+    "DAULE": {
+        "lat": -1.8622,
+        "lon": -79.9772,
+        "fuente": "verificado",
+        "referencia": "Daule, Guayas, Ecuador"
+    },
+    "DURAN": {
+        "lat": -2.171,
+        "lon": -79.8388,
+        "fuente": "verificado",
+        "referencia": "Durán, Guayas, Ecuador"
+    },
+    "IBARRA": {
+        "lat": 0.3517,
+        "lon": -78.1223,
+        "fuente": "verificado",
+        "referencia": "Ibarra, Imbabura, Ecuador"
+    },
+    "PALENQUE": {
+        "lat": -1.5349,
+        "lon": -79.9006,
+        "fuente": "verificado",
+        "referencia": "Palenque, Los Ríos, Ecuador"
+    },
+    "VENTANAS": {
+        "lat": -1.4462,
+        "lon": -79.455,
+        "fuente": "verificado",
+        "referencia": "Ventanas, Los Ríos, Ecuador"
+    },
+    "TENA": {
+        "lat": -0.9938,
+        "lon": -77.8146,
+        "fuente": "verificado",
+        "referencia": "Tena, Napo, Ecuador"
+    },
+    "RUMINAHUI": {
+        "lat": -0.3339,
+        "lon": -78.4531,
+        "fuente": "verificado",
+        "referencia": "Rumiñahui (Sangolquí), Pichincha, Ecuador"
+    },
     "LATACUNGA": {
         "lat": -0.935,
         "lon": -78.6156,
