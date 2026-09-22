@@ -17,7 +17,7 @@ require_once __DIR__ . '/CotizacionParser.php';
 class VisionExtractor
 {
     private const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/';
-    private const GEMINI_MODELO   = 'gemini-2.0-flash';
+    private const GEMINI_MODELO   = 'gemini-3.6-flash';
 
     private const ANTHROPIC_ENDPOINT = 'https://api.anthropic.com/v1/messages';
     private const ANTHROPIC_VERSION  = '2023-06-01';
@@ -139,11 +139,51 @@ TXT;
     // ---------------------------------------------------------------------
     //  Google Gemini (gratis)
     // ---------------------------------------------------------------------
+    /**
+     * Modelos de Gemini a probar, en orden. Si el usuario fijó uno (GEMINI_MODEL
+     * o config), va primero; luego varios de respaldo, porque los flash pueden
+     * saturarse (503) por picos de demanda y conviene tener alternativas.
+     */
+    private static function modelosGemini(): array
+    {
+        $userSel = self::config('gemini_model') ?: (getenv('GEMINI_MODEL') ?: '');
+        $lista = [];
+        if ($userSel !== '') $lista[] = $userSel;
+        foreach ([self::GEMINI_MODELO, 'gemini-3.5-flash', 'gemini-3.7-flash', 'gemini-flash-latest'] as $m) {
+            $lista[] = $m;
+        }
+        return array_values(array_unique($lista));
+    }
+
     private static function llamarGemini(string $b64, string $mediaType, string $instrucciones): string
     {
-        $modelo = self::config('gemini_model') ?: (getenv('GEMINI_MODEL') ?: self::GEMINI_MODELO);
-        $url = self::GEMINI_ENDPOINT . rawurlencode($modelo) . ':generateContent';
+        $modelos = self::modelosGemini();
+        $rondas = 2;            // dos pasadas por toda la lista de modelos
+        $ultimoError = '';
 
+        for ($ronda = 0; $ronda < $rondas; $ronda++) {
+            foreach ($modelos as $modelo) {
+                try {
+                    return self::pedirGemini($modelo, $b64, $mediaType, $instrucciones);
+                } catch (Exception $e) {
+                    // Clave inválida / sin permiso: no tiene sentido seguir probando.
+                    if ($e->getCode() === 401 || $e->getCode() === 403) throw $e;
+                    $ultimoError = $e->getMessage();
+                    // Cualquier otro error (saturación 503/429, modelo no disponible,
+                    // fallo de red): seguir con el siguiente modelo.
+                }
+            }
+            if ($ronda < $rondas - 1) sleep(5); // esperar antes de otra pasada
+        }
+        throw new Exception($ultimoError !== ''
+            ? ('No se pudo leer la imagen (los modelos de IA están ocupados). ' . $ultimoError)
+            : 'No se pudo leer la imagen con Gemini.');
+    }
+
+    /** Una sola llamada a Gemini con un modelo concreto. Devuelve el texto. */
+    private static function pedirGemini(string $modelo, string $b64, string $mediaType, string $instrucciones): string
+    {
+        $url = self::GEMINI_ENDPOINT . rawurlencode($modelo) . ':generateContent';
         $payload = [
             'contents' => [[
                 'parts' => [
@@ -250,7 +290,11 @@ TXT;
         return $mapa[$ext] ?? 'image/jpeg';
     }
 
-    /** POST JSON genérico. Devuelve el cuerpo de la respuesta o lanza Exception. */
+    /**
+     * POST JSON (un intento). Devuelve el cuerpo, o lanza Exception con el
+     * código HTTP como código de la excepción (para que el llamador distinga
+     * un error de clave (401/403) de una saturación temporal (503/429)).
+     */
     private static function httpPost(string $url, array $payload, array $headers, string $proveedor): string
     {
         $c = curl_init($url);
@@ -258,21 +302,21 @@ TXT;
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE),
-            CURLOPT_TIMEOUT => 180,
+            CURLOPT_TIMEOUT => 90,
             CURLOPT_CONNECTTIMEOUT => 15,
             CURLOPT_HTTPHEADER => $headers,
         ]);
         $r = curl_exec($c);
         $errno = curl_errno($c);
         $err = curl_error($c);
-        $code = curl_getinfo($c, CURLINFO_HTTP_CODE);
+        $code = (int)curl_getinfo($c, CURLINFO_HTTP_CODE);
         curl_close($c);
 
         if ($r === false || $errno !== 0) {
-            throw new Exception("No se pudo contactar a la IA ($proveedor): $err");
+            throw new Exception("No se pudo contactar a la IA ($proveedor): $err", 0);
         }
         if ($code === 401 || $code === 403) {
-            throw new Exception("La clave de API de $proveedor no es válida o no tiene permiso ($code). Revísala en Render.");
+            throw new Exception("La clave de API de $proveedor no es válida o no tiene permiso ($code). Revísala en Render.", $code);
         }
         if ($code < 200 || $code >= 300) {
             $detalle = '';
@@ -281,7 +325,7 @@ TXT;
                 $detalle = $j['error']['message'] ?? ($j['error']['status'] ?? '');
                 if ($detalle !== '') $detalle = ': ' . $detalle;
             }
-            throw new Exception("$proveedor respondió con código $code$detalle.");
+            throw new Exception("$proveedor respondió con código $code$detalle.", $code);
         }
         return (string)$r;
     }
