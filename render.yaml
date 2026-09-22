@@ -6,7 +6,12 @@ services:
     dockerfilePath: ./Dockerfile
     autoDeploy: true
     envVars:
-      # Clave de API de Anthropic (Claude) para leer cotizaciones desde una FOTO.
-      # Se configura en el panel de Render (Environment); no se guarda en el repo.
+      # Clave GRATUITA de Google Gemini para leer cotizaciones desde una FOTO.
+      # Se obtiene gratis en https://aistudio.google.com/apikey y se configura en
+      # el panel de Render (Environment); no se guarda en el repo.
+      - key: GEMINI_API_KEY
+        sync: false
+      # Alternativa opcional de pago (Anthropic/Claude, más precisa). Si no la usas,
+      # déjala vacía: con GEMINI_API_KEY basta.
       - key: ANTHROPIC_API_KEY
         sync: false
