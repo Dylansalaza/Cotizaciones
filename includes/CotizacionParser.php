@@ -499,48 +499,76 @@ class CotizacionParser
             return [];
         }
 
-        $ciudades = [];
+        // 2. Convertir las filas de datos a registros simples y agrupar.
+        $registros = [];
         $provinciaActual = '';
-
         foreach ($rows as $i => $row) {
             if ($i <= $headerIndex) continue;
 
             $ciudadRaw = self::val($row, $map['ciudad']);
             $rutaRaw   = self::val($row, $map['ruta']);
-            $cliente   = $map['cliente']   !== null ? (string)(self::val($row, $map['cliente'])   ?? '') : '';
             $provRaw   = $map['provincia'] !== null ? self::val($row, $map['provincia']) : null;
-            $local     = $map['local']     !== null ? (string)(self::val($row, $map['local'])     ?? '') : '';
-            $numSuc    = $map['num_suc']   !== null ? (string)(self::val($row, $map['num_suc'])   ?? '') : '';
 
-            // Saltar filas sin ciudad, totales, o sin ruta asignada.
-            if ($ciudadRaw === null || trim((string)$ciudadRaw) === '') continue;
-            if (stripos((string)$ciudadRaw, 'Total') === 0) continue;
-            $ruta = $rutaRaw !== null ? trim((string)$rutaRaw) : '';
-            if ($ruta === '' || stripos($ruta, 'RUTA') === 0) continue;
-
-            if ($provRaw !== null && trim((string)$provRaw) !== '') {
+            // Arrastrar la provincia hacia abajo si una fila la trae vacía.
+            if ($provRaw !== null && trim((string)$provRaw) !== ''
+                && stripos((string)$provRaw, 'Total') === false) {
                 $provinciaActual = trim((string)$provRaw);
             }
 
-            $ciudad = trim((string)$ciudadRaw);
-            // Una ciudad podría aparecer en dos rutas distintas: la clave las separa.
+            $registros[] = [
+                'cliente'   => $map['cliente'] !== null ? (string)(self::val($row, $map['cliente']) ?? '') : '',
+                'num_suc'   => $map['num_suc'] !== null ? (string)(self::val($row, $map['num_suc']) ?? '') : '',
+                'local'     => $map['local']   !== null ? (string)(self::val($row, $map['local'])   ?? '') : '',
+                'ciudad'    => $ciudadRaw !== null ? (string)$ciudadRaw : '',
+                'provincia' => $provRaw !== null && trim((string)$provRaw) !== '' ? trim((string)$provRaw) : $provinciaActual,
+                'ruta'      => $rutaRaw !== null ? (string)$rutaRaw : '',
+            ];
+        }
+
+        return self::construirCiudadesPorRuta($registros);
+    }
+
+    /**
+     * Agrupa una lista de registros (cada uno con cliente, num_suc, local,
+     * ciudad, provincia y ruta) en la estructura de "ciudades" que consume el
+     * resto de la app. Cada local queda como una parada; se agrupa por
+     * ciudad + ruta. Lo usan tanto el Excel "por ruta" como la lectura de
+     * imágenes (VisionExtractor), para no duplicar la lógica.
+     *
+     * @param array<int,array<string,string>> $registros
+     */
+    public static function construirCiudadesPorRuta(array $registros): array
+    {
+        $ciudades = [];
+        foreach ($registros as $r) {
+            $ciudad = trim((string)($r['ciudad'] ?? ''));
+            $ruta   = trim((string)($r['ruta'] ?? ''));
+            if ($ciudad === '' || $ruta === '') continue;                 // sin ciudad o sin ruta: no aplica
+            if (stripos($ciudad, 'Total') === 0) continue;                // fila de totales
+            if (stripos($ruta, 'RUTA') === 0) continue;                   // encabezado repetido
+
+            $cliente = trim((string)($r['cliente'] ?? ''));
+            $local   = trim((string)($r['local'] ?? ''));
+            $numSuc  = trim((string)($r['num_suc'] ?? ''));
+            $prov    = trim((string)($r['provincia'] ?? ''));
+
             $key = self::normalize($ciudad) . '||' . self::normalize($ruta);
             if (!isset($ciudades[$key])) {
                 $ciudades[$key] = [
                     'ciudad' => $ciudad,
-                    'provincia' => $provinciaActual,
+                    'provincia' => $prov,
                     'cajas' => 0,
                     'volumen_m3' => 0,
                     'peso_kg' => 0,
                     'direcciones' => [],
                     'es_quito' => false,
-                    'ruta_forzada' => $ruta, // la RUTA viene del archivo, no se deduce
+                    'ruta_forzada' => $ruta, // la RUTA viene dada, no se deduce por ciudad
                 ];
             }
 
             // Cada local = una parada. Se geolocaliza por CIUDAD (no hay dirección
             // exacta), y el nombre del local se muestra como "cliente" de la parada.
-            $etiquetaLocal = trim($local !== '' ? $local : ($numSuc !== '' ? $numSuc : $ciudad));
+            $etiquetaLocal = $local !== '' ? $local : ($numSuc !== '' ? $numSuc : $ciudad);
             $nombreCliente = trim(($cliente !== '' ? $cliente : '') . ($local !== '' ? ' · ' . $local : ''));
             if ($nombreCliente === '') $nombreCliente = $etiquetaLocal;
 

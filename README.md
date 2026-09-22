@@ -6,7 +6,12 @@ cotización y obtiene, por ruta: peso, volumen, camión sugerido y el
 (orden óptimo por dirección) y el costo. Exporta el tarifario a **Word**.
 
 ## Características
-- Lectura de cotización `.xlsx` (sin dependencias externas).
+- Lectura de cotización `.xlsx` (sin dependencias externas). Soporta tres formatos:
+  detallado (con dimensiones), resumen (Envibox) y "por ruta" (plan de introducción
+  por local, con la ruta ya asignada, p. ej. QSG2/QSG3).
+- **Lectura desde una FOTO**: sube una imagen de la tabla y la IA (Claude, visión)
+  la lee y arma el recorrido por ruta. Requiere configurar `ANTHROPIC_API_KEY`
+  (ver abajo).
 - Geolocalización con software libre: OpenStreetMap (Nominatim + Photon) y
   ruteo real con OSRM. Opcionalmente Google Maps si se configura una clave.
 - Orden de ruta óptimo (vecino más cercano + 2-opt) empezando en Amaguaña.
@@ -18,6 +23,18 @@ Requiere PHP 8+ con extensiones `curl` y `zip`.
 php -S 127.0.0.1:8000
 ```
 Luego abre http://127.0.0.1:8000
+
+## Leer cotizaciones desde una FOTO (IA)
+Para subir una imagen/foto de la tabla en vez de un Excel, configura la clave de
+API de Anthropic (Claude):
+- En **Render**: panel del servicio → *Environment* → añade `ANTHROPIC_API_KEY`.
+- En **local**: exporta `ANTHROPIC_API_KEY=...` o crea `config.local.php` que
+  devuelva `['anthropic_api_key' => '...']` (opcional `'anthropic_model' => '...'`,
+  por defecto `claude-opus-5`).
+
+La foto debe mostrar una tabla con al menos las columnas **Ciudad** y **Ruta**
+(formato "plan de introducción por local"). Sin la clave, la lectura por Excel
+sigue funcionando igual.
 
 ## Despliegue gratuito (Docker / Render)
 El repo incluye `Dockerfile` y `render.yaml`. En https://render.com:

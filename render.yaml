@@ -5,3 +5,8 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    envVars:
+      # Clave de API de Anthropic (Claude) para leer cotizaciones desde una FOTO.
+      # Se configura en el panel de Render (Environment); no se guarda en el repo.
+      - key: ANTHROPIC_API_KEY
+        sync: false

@@ -1107,3 +1107,9 @@ table.detalle tbody tr:hover { background: #f0f5fc; }
   .ubi-botones { width: 100%; }
   .btn-wa, .btn-guia { width: 100%; justify-content: center; }
 }
+
+/* Subida por imagen (foto de la tabla) */
+.upload-label { display:block; font-weight:600; margin:.25rem 0 .4rem; }
+.upload-sep { text-align:center; color:#94a3b8; margin:1rem 0; font-weight:600; letter-spacing:.05em; }
+#form-upload-imagen { border-top:1px dashed #e2e8f0; padding-top:1rem; }
+.upload-ayuda { color:#64748b; font-size:.85rem; margin:.5rem 0 0; }
