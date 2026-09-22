@@ -46,6 +46,48 @@
         "fuente": "verificado",
         "referencia": "Rumiñahui (Sangolquí), Pichincha, Ecuador"
     },
+    "FLAVIO ALFARO": {
+        "lat": -0.3839,
+        "lon": -79.9019,
+        "fuente": "verificado",
+        "referencia": "Flavio Alfaro, Manabí, Ecuador"
+    },
+    "CHONE": {
+        "lat": -0.6961,
+        "lon": -80.0942,
+        "fuente": "verificado",
+        "referencia": "Chone, Manabí, Ecuador"
+    },
+    "TOSAGUA": {
+        "lat": -0.7869,
+        "lon": -80.2367,
+        "fuente": "verificado",
+        "referencia": "Tosagua, Manabí, Ecuador"
+    },
+    "PORTOVIEJO": {
+        "lat": -1.0546,
+        "lon": -80.4545,
+        "fuente": "verificado",
+        "referencia": "Portoviejo, Manabí, Ecuador"
+    },
+    "JIPIJAPA": {
+        "lat": -1.3486,
+        "lon": -80.5789,
+        "fuente": "verificado",
+        "referencia": "Jipijapa, Manabí, Ecuador"
+    },
+    "MONTECRISTI": {
+        "lat": -1.0464,
+        "lon": -80.6584,
+        "fuente": "verificado",
+        "referencia": "Montecristi, Manabí, Ecuador"
+    },
+    "ROCAFUERTE": {
+        "lat": -0.9214,
+        "lon": -80.4472,
+        "fuente": "verificado",
+        "referencia": "Rocafuerte, Manabí, Ecuador"
+    },
     "LATACUNGA": {
         "lat": -0.935,
         "lon": -78.6156,
