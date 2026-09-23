@@ -22,22 +22,11 @@
 
 <main class="container">
   <section class="card" id="upload-card">
-    <h2>1. Subir cotización</h2>
+    <h2>1. Subir cotización (.xlsx)</h2>
     <form id="form-upload">
-      <label class="upload-label">📄 Archivo Excel (.xlsx)</label>
       <input type="file" id="input-excel" name="excel" accept=".xlsx" required>
       <button type="submit" class="btn btn-primary">Procesar Excel</button>
     </form>
-
-    <div class="upload-sep">— o —</div>
-
-    <form id="form-upload-imagen">
-      <label class="upload-label">📷 Foto de la tabla (plan por local, con columnas Ciudad y Ruta)</label>
-      <input type="file" id="input-imagen" name="imagen" accept="image/*" required>
-      <button type="submit" class="btn btn-primary">Leer imagen con IA</button>
-      <p class="upload-ayuda">La IA lee la foto y arma el recorrido por ruta. Toma unos segundos.</p>
-    </form>
-
     <div id="upload-status"></div>
   </section>
 

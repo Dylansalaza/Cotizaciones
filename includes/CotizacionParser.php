@@ -532,8 +532,7 @@ class CotizacionParser
      * Agrupa una lista de registros (cada uno con cliente, num_suc, local,
      * ciudad, provincia y ruta) en la estructura de "ciudades" que consume el
      * resto de la app. Cada local queda como una parada; se agrupa por
-     * ciudad + ruta. Lo usan tanto el Excel "por ruta" como la lectura de
-     * imágenes (VisionExtractor), para no duplicar la lógica.
+     * ciudad + ruta. La usa el Excel de formato "por ruta".
      *
      * @param array<int,array<string,string>> $registros
      */

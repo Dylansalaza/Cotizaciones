@@ -229,31 +229,6 @@ $('#form-upload').addEventListener('submit', async (e) => {
   }
 });
 
-// Subir una FOTO de la tabla: la IA (Claude) la lee y arma el recorrido por ruta.
-const formImagen = document.getElementById('form-upload-imagen');
-if (formImagen) {
-  formImagen.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const archivo = document.getElementById('input-imagen').files[0];
-    if (!archivo) return;
-    const fd = new FormData();
-    fd.append('imagen', archivo);
-    $('#upload-status').innerHTML = '<span class="cargando">📷 Leyendo la imagen con IA… (puede tardar unos segundos)</span>';
-
-    try {
-      const res = await fetch('api/procesar_imagen.php', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (!data.ok) throw new Error(data.error);
-      $('#upload-status').innerHTML = `<span class="msg-ok">✔ ${data.ciudades.length} ciudad(es) leídas de la imagen.</span>`;
-      cotizacionCargada = true;
-      await calcularDirecciones();
-      mostrarBotonUbicaciones();
-    } catch (err) {
-      $('#upload-status').innerHTML = `<span class="msg-error">✖ ${err.message}</span>`;
-    }
-  });
-}
-
 async function calcular() {
   const res = await fetch('api/calcular.php');
   const data = await res.json();
