@@ -5,9 +5,9 @@ class CotizacionParser
 {
     public static function parse(string $filepath): array
     {
-        $rows = XlsxReader::read($filepath);
+        $hojas = XlsxReader::readSheets($filepath);
 
-        // Existen dos formatos de Excel de cotización:
+        // Existen tres formatos de Excel de cotización:
         //  - "detallado": trae columnas LARGO/ANCHO/ALTO y filas de resumen
         //    "Total <ciudad>" (formato clásico, p. ej. COTIZACIÓN GC46). El
         //    volumen se calcula a partir de las dimensiones y las ciudades se
@@ -15,6 +15,18 @@ class CotizacionParser
         //  - "resumen": trae directamente Nro Cajas / Peso total / CBM ya
         //    calculados por cada cliente, SIN dimensiones ni filas "Total"
         //    (p. ej. "Cotización Envibox"). Cada fila es una ciudad+cliente.
+        //  - "por ruta": plan de introducción por LOCAL/tienda. Cada fila es una
+        //    sucursal con su RUTA ya asignada en el archivo (p. ej. QSG2/QSG3),
+        //    ciudad y provincia. La ruta NO se deduce por ciudad: viene dada.
+        //    Puede estar en cualquiera de las hojas del libro (SEM15/MANTA/...).
+        foreach ($hojas as $hoja) {
+            if (self::detectarFormatoPorRuta($hoja['rows'])) {
+                return self::parsePorRuta($hoja['rows']);
+            }
+        }
+
+        // Formatos clásicos: usan la primera hoja del libro.
+        $rows = $hojas[0]['rows'] ?? [];
         if (self::detectarFormato($rows) === 'resumen') {
             return self::parseResumen($rows);
         }
@@ -395,6 +407,182 @@ class CotizacionParser
             $c['direcciones'] = array_values($c['direcciones']);
             $c['peso_ton'] = round($c['peso_kg'] / 1000, 3);
         }
+        unset($c);
+
+        return array_values($ciudades);
+    }
+
+    /**
+     * ¿Es el formato "por ruta" (plan de introducción por local)? Se reconoce
+     * porque el encabezado trae una columna RUTA (la ruta ya viene asignada en
+     * el archivo, p. ej. QSG2/QSG3), junto con CIUDAD y una columna de locales
+     * ("LOCALES CON INTRODUCCIÓN" o "NÚMERO DE SUC"). Los formatos de encomiendas
+     * no tienen columna RUTA, así que no chocan con esta detección.
+     */
+    private static function detectarFormatoPorRuta(array $rows): bool
+    {
+        foreach ($rows as $row) {
+            $etiquetas = [];
+            foreach ($row as $v) {
+                $e = self::normalize((string)($v ?? ''));
+                if ($e !== '') $etiquetas[] = $e;
+            }
+            if (empty($etiquetas)) continue;
+            $todo = '|' . implode('|', $etiquetas) . '|';
+
+            $tieneRuta   = strpos($todo, '|RUTA|') !== false;
+            $tieneCiudad = strpos($todo, '|CIUDAD|') !== false;
+            $tieneLocal  = strpos($todo, 'LOCALES CON INTRODUCCION') !== false
+                        || strpos($todo, 'NUMERO DE SUC') !== false;
+
+            if ($tieneRuta && $tieneCiudad && $tieneLocal) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Ubica el índice de cada columna del formato "por ruta". */
+    private static function mapearColumnasPorRuta(array $header): array
+    {
+        $map = [
+            'cliente' => null, 'num_suc' => null, 'local' => null,
+            'ciudad' => null, 'provincia' => null, 'ruta' => null,
+        ];
+        foreach ($header as $i => $v) {
+            $l = self::normalize((string)($v ?? ''));
+            if ($l === '') continue;
+
+            if ($map['cliente'] === null && $l === 'CLIENTE') {
+                $map['cliente'] = $i;
+            } elseif ($map['num_suc'] === null &&
+                      (strpos($l, 'NUMERO DE SUC') !== false || strpos($l, 'SUCURSAL') !== false)) {
+                $map['num_suc'] = $i;
+            } elseif ($map['local'] === null && strpos($l, 'LOCALES') !== false) {
+                $map['local'] = $i;
+            } elseif ($map['provincia'] === null && strpos($l, 'PROVINCIA') !== false) {
+                $map['provincia'] = $i;
+            } elseif ($map['ciudad'] === null && strpos($l, 'CIUDAD') !== false) {
+                $map['ciudad'] = $i;
+            } elseif ($map['ruta'] === null && $l === 'RUTA') {
+                $map['ruta'] = $i;
+            }
+        }
+        return $map;
+    }
+
+    /**
+     * Formato "por ruta": cada fila es una sucursal/local con su RUTA ya
+     * asignada. Se agrupa por ciudad + ruta; cada local queda como una parada
+     * (dirección) para el recorrido de entrega. No hay peso/volumen: se usa
+     * "cajas" para contar los locales de cada ciudad.
+     */
+    private static function parsePorRuta(array $rows): array
+    {
+        // 1. Localizar la fila de encabezados y mapear columnas.
+        $headerIndex = null;
+        $map = null;
+        foreach ($rows as $i => $row) {
+            $etiquetas = [];
+            foreach ($row as $v) {
+                $etiquetas[] = self::normalize((string)($v ?? ''));
+            }
+            $todo = '|' . implode('|', $etiquetas) . '|';
+            if (strpos($todo, '|RUTA|') !== false && strpos($todo, '|CIUDAD|') !== false
+                && (strpos($todo, 'LOCALES') !== false || strpos($todo, 'NUMERO DE SUC') !== false)) {
+                $headerIndex = $i;
+                $map = self::mapearColumnasPorRuta($row);
+                break;
+            }
+        }
+        if ($map === null || $map['ciudad'] === null || $map['ruta'] === null) {
+            return [];
+        }
+
+        // 2. Convertir las filas de datos a registros simples y agrupar.
+        $registros = [];
+        $provinciaActual = '';
+        foreach ($rows as $i => $row) {
+            if ($i <= $headerIndex) continue;
+
+            $ciudadRaw = self::val($row, $map['ciudad']);
+            $rutaRaw   = self::val($row, $map['ruta']);
+            $provRaw   = $map['provincia'] !== null ? self::val($row, $map['provincia']) : null;
+
+            // Arrastrar la provincia hacia abajo si una fila la trae vacía.
+            if ($provRaw !== null && trim((string)$provRaw) !== ''
+                && stripos((string)$provRaw, 'Total') === false) {
+                $provinciaActual = trim((string)$provRaw);
+            }
+
+            $registros[] = [
+                'cliente'   => $map['cliente'] !== null ? (string)(self::val($row, $map['cliente']) ?? '') : '',
+                'num_suc'   => $map['num_suc'] !== null ? (string)(self::val($row, $map['num_suc']) ?? '') : '',
+                'local'     => $map['local']   !== null ? (string)(self::val($row, $map['local'])   ?? '') : '',
+                'ciudad'    => $ciudadRaw !== null ? (string)$ciudadRaw : '',
+                'provincia' => $provRaw !== null && trim((string)$provRaw) !== '' ? trim((string)$provRaw) : $provinciaActual,
+                'ruta'      => $rutaRaw !== null ? (string)$rutaRaw : '',
+            ];
+        }
+
+        return self::construirCiudadesPorRuta($registros);
+    }
+
+    /**
+     * Agrupa una lista de registros (cada uno con cliente, num_suc, local,
+     * ciudad, provincia y ruta) en la estructura de "ciudades" que consume el
+     * resto de la app. Cada local queda como una parada; se agrupa por
+     * ciudad + ruta. La usa el Excel de formato "por ruta".
+     *
+     * @param array<int,array<string,string>> $registros
+     */
+    public static function construirCiudadesPorRuta(array $registros): array
+    {
+        $ciudades = [];
+        foreach ($registros as $r) {
+            $ciudad = trim((string)($r['ciudad'] ?? ''));
+            $ruta   = trim((string)($r['ruta'] ?? ''));
+            if ($ciudad === '' || $ruta === '') continue;                 // sin ciudad o sin ruta: no aplica
+            if (stripos($ciudad, 'Total') === 0) continue;                // fila de totales
+            if (stripos($ruta, 'RUTA') === 0) continue;                   // encabezado repetido
+
+            $cliente = trim((string)($r['cliente'] ?? ''));
+            $local   = trim((string)($r['local'] ?? ''));
+            $numSuc  = trim((string)($r['num_suc'] ?? ''));
+            $prov    = trim((string)($r['provincia'] ?? ''));
+
+            $key = self::normalize($ciudad) . '||' . self::normalize($ruta);
+            if (!isset($ciudades[$key])) {
+                $ciudades[$key] = [
+                    'ciudad' => $ciudad,
+                    'provincia' => $prov,
+                    'cajas' => 0,
+                    'volumen_m3' => 0,
+                    'peso_kg' => 0,
+                    'direcciones' => [],
+                    'es_quito' => false,
+                    'ruta_forzada' => $ruta, // la RUTA viene dada, no se deduce por ciudad
+                ];
+            }
+
+            // Cada local = una parada. Se geolocaliza por CIUDAD (no hay dirección
+            // exacta), y el nombre del local se muestra como "cliente" de la parada.
+            $etiquetaLocal = $local !== '' ? $local : ($numSuc !== '' ? $numSuc : $ciudad);
+            $nombreCliente = trim(($cliente !== '' ? $cliente : '') . ($local !== '' ? ' · ' . $local : ''));
+            if ($nombreCliente === '') $nombreCliente = $etiquetaLocal;
+
+            $ciudades[$key]['cajas'] += 1;
+            $ciudades[$key]['direcciones'][] = [
+                'direccion' => '',              // sin dirección exacta: ubica por ciudad
+                'cliente' => $nombreCliente,
+                'local' => $etiquetaLocal,
+                'cajas' => 1,
+                'volumen_m3' => 0,
+                'peso_kg' => 0,
+            ];
+        }
+
+        foreach ($ciudades as &$c) { $c['peso_ton'] = 0; }
         unset($c);
 
         return array_values($ciudades);

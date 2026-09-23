@@ -6,7 +6,9 @@ cotización y obtiene, por ruta: peso, volumen, camión sugerido y el
 (orden óptimo por dirección) y el costo. Exporta el tarifario a **Word**.
 
 ## Características
-- Lectura de cotización `.xlsx` (sin dependencias externas).
+- Lectura de cotización `.xlsx` (sin dependencias externas). Soporta tres formatos:
+  detallado (con dimensiones), resumen (Envibox) y "por ruta" (plan de introducción
+  por local, con la ruta ya asignada, p. ej. QSG2/QSG3).
 - Geolocalización con software libre: OpenStreetMap (Nominatim + Photon) y
   ruteo real con OSRM. Opcionalmente Google Maps si se configura una clave.
 - Orden de ruta óptimo (vecino más cercano + 2-opt) empezando en Amaguaña.

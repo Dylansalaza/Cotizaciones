@@ -45,12 +45,20 @@ try {
     $rutasConfig = Rutas::cargar();
     $itinerarios = Itinerarios::cargar();
 
-    // Agrupar por ruta.
+    // Agrupar por ruta. Si la ciudad trae "ruta_forzada" (formato por local, la
+    // ruta viene en el archivo, p. ej. QSG2/QSG3) se usa esa; si no, se deduce
+    // por ciudad con data/rutas.json. Las rutas que vienen del archivo y no están
+    // en la configuración se crean al vuelo para que tengan nombre y grupo.
     $porRuta = [];
     $sinAsignar = [];
     foreach ($ciudades as $c) {
-        $rutaId = Rutas::buscarRutaDeCiudad($c['ciudad'], $rutasConfig);
-        if ($rutaId === null) { $sinAsignar[] = $c; continue; }
+        $rutaId = !empty($c['ruta_forzada'])
+            ? $c['ruta_forzada']
+            : Rutas::buscarRutaDeCiudad($c['ciudad'], $rutasConfig);
+        if ($rutaId === null || $rutaId === '') { $sinAsignar[] = $c; continue; }
+        if (!isset($rutasConfig[$rutaId])) {
+            $rutasConfig[$rutaId] = ['nombre' => $rutaId, 'grupo' => 'Ruta del archivo', 'lugares' => []];
+        }
         $porRuta[$rutaId][] = $c;
     }
 

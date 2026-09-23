@@ -46,9 +46,12 @@ try {
         $ciudadNombre = tituloBonito($ciudad);
         $ciudadKey = CotizacionParser::normalize($ciudad);
 
-        // Ruta fija a la que pertenece la ciudad (según data/rutas.json).
-        $rutaId = Rutas::buscarRutaDeCiudad($ciudad, $rutasConfig);
-        if ($rutaId !== null) {
+        // Ruta a la que pertenece la ciudad: la del archivo (ruta_forzada) si
+        // viene dada, o la deducida por ciudad (según data/rutas.json).
+        $rutaId = !empty($c['ruta_forzada'])
+            ? $c['ruta_forzada']
+            : Rutas::buscarRutaDeCiudad($ciudad, $rutasConfig);
+        if ($rutaId !== null && $rutaId !== '') {
             $rutaKey    = $rutaId;
             $rutaNombre = $rutasConfig[$rutaId]['nombre'] ?? $rutaId;
             $rutaGrupo  = $rutasConfig[$rutaId]['grupo'] ?? '';

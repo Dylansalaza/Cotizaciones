@@ -7,10 +7,23 @@
 class XlsxReader
 {
     /**
-     * Lee la primera hoja de un archivo .xlsx y devuelve un arreglo de filas.
+     * Lee la PRIMERA hoja de un archivo .xlsx y devuelve un arreglo de filas.
      * Cada fila es un arreglo indexado por número de columna (0 = A, 1 = B, ...).
+     * Se conserva por compatibilidad con los formatos que solo usan una hoja.
      */
     public static function read(string $filepath): array
+    {
+        $hojas = self::readSheets($filepath);
+        return $hojas[0]['rows'] ?? [];
+    }
+
+    /**
+     * Lee TODAS las hojas del libro (hasta 50) y devuelve una lista con
+     * ['nombre' => ..., 'rows' => [...]] por cada hoja. Útil cuando el archivo
+     * trae varias hojas (p. ej. SEM15 / MANTA / MACHALA) y hay que ubicar la
+     * que contiene los datos de la cotización.
+     */
+    public static function readSheets(string $filepath): array
     {
         $zip = new ZipArchive();
         if ($zip->open($filepath) !== true) {
@@ -22,38 +35,67 @@ class XlsxReader
         $sstXml = $zip->getFromName('xl/sharedStrings.xml');
         if ($sstXml !== false) {
             $sst = simplexml_load_string($sstXml);
-            foreach ($sst->si as $si) {
-                if (isset($si->t)) {
-                    $sharedStrings[] = (string)$si->t;
-                } else {
-                    // texto con formato mixto (varios <r><t>)
-                    $text = '';
-                    foreach ($si->r as $r) {
-                        $text .= (string)$r->t;
+            if ($sst !== false) {
+                foreach ($sst->si as $si) {
+                    if (isset($si->t)) {
+                        $sharedStrings[] = (string)$si->t;
+                    } else {
+                        // texto con formato mixto (varios <r><t>)
+                        $text = '';
+                        foreach ($si->r as $r) {
+                            $text .= (string)$r->t;
+                        }
+                        $sharedStrings[] = $text;
                     }
-                    $sharedStrings[] = $text;
                 }
             }
         }
 
-        // 2. Encontrar la primera hoja disponible
-        $sheetPath = null;
-        for ($i = 1; $i <= 20; $i++) {
-            $candidate = "xl/worksheets/sheet{$i}.xml";
-            if ($zip->locateName($candidate) !== false) {
-                $sheetPath = $candidate;
-                break;
+        // 2. Nombres de las hojas (en orden), desde workbook.xml. Es solo para
+        //    mostrar; si no se puede leer, se usan nombres genéricos.
+        $nombres = [];
+        $wbXml = $zip->getFromName('xl/workbook.xml');
+        if ($wbXml !== false) {
+            $wb = simplexml_load_string($wbXml);
+            if ($wb !== false && isset($wb->sheets->sheet)) {
+                foreach ($wb->sheets->sheet as $s) {
+                    $nombres[] = (string)$s['name'];
+                }
             }
         }
-        if ($sheetPath === null) {
-            throw new Exception('No se encontró ninguna hoja dentro del archivo Excel.');
+
+        // 3. Leer cada hoja física disponible (sheet1.xml, sheet2.xml, ...).
+        $hojas = [];
+        for ($i = 1; $i <= 50; $i++) {
+            $candidate = "xl/worksheets/sheet{$i}.xml";
+            if ($zip->locateName($candidate) === false) {
+                continue;
+            }
+            $sheetXml = $zip->getFromName($candidate);
+            if ($sheetXml === false) continue;
+            $rows = self::parseSheetXml($sheetXml, $sharedStrings);
+            $hojas[] = [
+                'nombre' => $nombres[$i - 1] ?? ('Hoja' . $i),
+                'rows'   => $rows,
+            ];
         }
 
-        $sheetXml = $zip->getFromName($sheetPath);
         $zip->close();
 
+        if (empty($hojas)) {
+            throw new Exception('No se encontró ninguna hoja dentro del archivo Excel.');
+        }
+        return $hojas;
+    }
+
+    /** Convierte el XML de una hoja en filas indexadas por columna (0 = A). */
+    private static function parseSheetXml(string $sheetXml, array $sharedStrings): array
+    {
         $sheet = simplexml_load_string($sheetXml);
         $rows = [];
+        if ($sheet === false || !isset($sheet->sheetData)) {
+            return $rows;
+        }
 
         foreach ($sheet->sheetData->row as $row) {
             $rowIndex = (int)$row['r'] - 1;
